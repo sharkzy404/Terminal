@@ -132,7 +132,7 @@ MORE Functions COMING...
             sock.connect(('192.255.255.255',1))
             print (F.BLUE+sock.getsockname()[0])
         except:
-            print(F.BLUE+sub.getoutput('ifconfig').split(" ")[22])
+            print(F.BLUE+sub.getoutput('ifconfig').split(" ")[13])
 
     def cpu_info (self): #8
         try:
