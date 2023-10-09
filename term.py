@@ -156,7 +156,7 @@ MORE Functions COMING...
         c, addr = self.sock.accept()
 
         while True:
-            c.send(F.GREEN+"Waiting for incoming Message::\n".encode())
+            c.send("Waiting for incoming Message::\n".encode())
             out_mes = input("[*]Send-Message: ")
             if out_mes == "bye":
                 c.close()
