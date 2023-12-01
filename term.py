@@ -259,8 +259,7 @@ MORE Functions COMING...
                         data1 = data.replace(" ", "~").encode()
                         rep = len(data)-1//len(decryp_hash)+1
                         a4 = (decryp_hash*rep)[:len(data)].encode()
-                        new_data =b"enc=" + bytes([i1^i2 for (i1,i2) in zip
-(data1, a4)])
+                        new_data =b"enc=" + bytes([i1^i2 for (i1,i2) in zip(data1, a4)])
                         new_file = open(file, "w")
                         new_file.write(new_data.decode())
                         new_file.close()
