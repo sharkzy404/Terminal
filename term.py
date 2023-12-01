@@ -73,8 +73,7 @@ MORE Functions COMING...
             data = self.soc.gethostbyname(host)
             print (F.BLUE+f"{host}: {data}")
         except:
-            print (F.RED+"[*] Error, maybe invalid host or no network conne
-ction [*]")
+            print (F.RED+"[*] Error, maybe invalid host or no network connection [*]")
 
     def port_scan(self, ip): #2
         total_port = 0
@@ -147,8 +146,7 @@ ction [*]")
         print (F.YELLOW+"[*] Starting Server")
 
         tm.sleep(2)
-        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.ran
-dint(1,6))
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
         ip = sub.getoutput('ifconfig').split(" ")[13]
         port = a3+a2+a1+a2+a3
         print (F.BLUE+"Server Started")
@@ -165,8 +163,7 @@ dint(1,6))
             if out_mes == "bye":
                 c.close()
                 quit(0)
-            c.send(f"Receiced message: {out_mes}\n[*]Send-Message: ".encode
-())
+            c.send(f"Receiced message: {out_mes}\n[*]Send-Message: ".encode())
             print ("Message Sent\nWaiting for incoming Message::")
 
             inp_mes = c.recv(1024).decode()
@@ -240,8 +237,7 @@ dint(1,6))
                         data1 = data.replace("enc=", "").encode()
                         rep = len(data)-1//len(decryp_hash)+1
                         a4 = (decryp_hash*rep)[:len(data)].encode()
-                        new_data = bytes([i1^i2 for (i1,i2) in zip(data1, a
-4)])
+                        new_data = bytes([i1^i2 for (i1,i2) in zip(data1, a4)])
                         dec_data = new_data.decode()
                         rep_data = dec_data.replace("~", " ")
                         new_file = open(file, "w")
