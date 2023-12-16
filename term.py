@@ -78,16 +78,22 @@ MORE Functions COMING...
     def port_scan(self, ip): #2
         total_port = 0
         port = 1
-        for i in range(9999):
+        for i in range(1000):
             try:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 port += 1
-                self.socket.connect((ip, port))
-                total_port += 1
-                print (F.BLUE+f"port {port} opened for {ip}")
+                sock.settimeout(0.03)
+                check =  sock.connect_ex((ip, port))
+                if check == 0:
+                    total_port += 1
+                    print (F.BLUE+f"port {port} opened for {ip}")
+                    sock.close()
+                else:
+                    pass
+                    sock.close()
             except:
-                pass
+                break
         print (F.GREEN+f"total port opened for {ip} is : {total_port}")
-
     def Bina_Num(self, binary, base): #3
         try:
             print (int(binary, int(base)))
