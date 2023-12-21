@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from os import system as sys
 from colorama import Fore as F
 import time as tm
