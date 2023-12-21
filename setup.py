@@ -1,7 +1,7 @@
 from os import system as sys
 
 try:
-    sys("pip install colorama")
+    sys("pip install colorama, re, xdg")
 except:
     print ("[*] An error occured")
 
