@@ -1,15 +1,21 @@
 #!/usr/bin/env python
 from os import system as sys
+import sys as sy
 from colorama import Fore as F
 import time as tm
 import socket
 import subprocess as sub
 import random as rd
+#IMPORTING LIBRARIES......
 from os.path import exists
 import os
 import re
 
+
+#CLEAR SCREEN......
 sys("clear")
+
+
 
 def inpu():
     print ("\n")
@@ -17,6 +23,9 @@ def inpu():
     data =  input(F.YELLOW+f".———[{subt}@Shark]\n|\n°———> "+ F.GREEN)
     return data
 
+
+
+#DECLARING CLASS......
 class shark:
     def __init__(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -28,28 +37,34 @@ class shark:
                    Welcome To Mr.Shark Terminal"
                    For help and functions: @help """
         print (F.GREEN+data)
+    
 
+
+
+    #HELP LIST FUNCTION.......
     def help(self):
         tools = """
 [1]. Getting Ip address: @get -ip [target]
      Example: @get -ip google.com
-[2]. Port scanning: @port -scan [target]
+[2]. Port scanning multiple: @port -scan [target]
      Example: @port -scan 127.0.0.1
-[3]. Convert Number to Binary: @num -b [number] [base]
+[3]. Port scanning single: @port -scan -s [target] [port]
+     Example: @port--s -scan 127.0.0.1 80
+[4]. Convert Number to Binary: @num -b [number] [base]
      Example: @num -b 2000 2
-[4]. Convert Binary to Number: @bina -n [binary] [base]
+[5]. Convert Binary to Number: @bina -n [binary] [base]
      Example: @bina -n 1011101010 2
-[5]. Convert Alphabet to Binary: @alpha -b
+[6]. Convert Alphabet to Binary: @alpha -b
      Example: @alpha -b 
-[6]. Convert Binary to Alphabet: @bina -a 
+[7]. Convert Binary to Alphabet: @bina -a 
      Example: @bina -a 
-[7]. To get device IP address: @ip -details
+[8]. To get device IP address: @ip -details
      Example: @ip -details
-[8]. To get cpu info: @cpu
+[9]. To get cpu info: @cpu
      Example: @cpu
-[9]. To open server: @open -server
+[10]. To open server: @open -server
      Example: @open -server
-[10].To create file: @file <option> <file_name>
+[11].To create file: @file <option> <file_name>
      Options: -C create file
               -A append data to existsing file
               -D delete file
@@ -57,15 +72,19 @@ class shark:
               -V check if file exists
               -ED encrypt/decrypt file
      Example: @file -CADRV(ED) filename.txt
-[11].To send message to a whatsapp contact: @send -w <number>
+[12].To send message to a whatsapp contact: @send -w <number>
     Example: @send -w +1234567890
 
-[12]. To exit program: @exit
+[13]. To exit program: @exit
 
 MORE Functions COMING...
 
         """
         print (F.BLUE+tools)
+
+
+
+
 
     def get_ip(self, host): #1
         try:
@@ -74,14 +93,18 @@ MORE Functions COMING...
         except:
             print (F.RED+"[*] Error, maybe invalid host or no network connection [*]")
 
+
+
+
+
     def port_scan(self, ip): #2
         total_port = 0
-        port = 1
-        for i in range(1000):
+        port = -1
+        for i in range(65354):
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 port += 1
-                sock.settimeout(0.03)
+                sock.settimeout(0.09)
                 check =  sock.connect_ex((ip, port))
                 if check == 0:
                     total_port += 1
@@ -92,16 +115,45 @@ MORE Functions COMING...
                     sock.close()
             except:
                 break
-        print (F.GREEN+f"total port opened for {ip} is : {total_port}")
+        print (F.GREEN+f"[*] Total port opened for {ip} is : {total_port}")
+        sock.close()
 
-    def Bina_Num(self, binary, base): #3
+
+
+
+
+    def port_scan_sin(self, ip, port): #3
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(0.09)
+            check = sock.connect_ex((ip, int(port)))
+            if check == 0:
+                print (F.BLUE+f"[*] Port: {port} opened")
+                sock.close()
+            else:
+                print (F.BLUE+f"[*] Port: {port} closed")
+                sock.close()
+        except:
+            print (F.RED+"[*] An error occured")
+            sock.close()
+
+
+
+
+
+
+    def Bina_Num(self, binary, base): #4
         try:
             print (F.GREEN+"[*]OUTPUT"+F.BLUE)
             print (F.BLUE+str(int(binary, int(base))))
         except:
             print (F.RED+"[*] an error occured [*]")
 
-    def Num_Bina(self, num, base): #4
+
+
+
+
+    def Num_Bina(self, num, base): #5
         try:
             num = int(num)
             base = int(base)
@@ -110,7 +162,10 @@ MORE Functions COMING...
         except:
             print (F.RED+"[*] an error occured [*]")
 
-    def Alpha_Bina(self): #5
+
+
+
+    def Alpha_Bina(self): #6
         alph = input(F.YELLOW+"[*] Enter Text: "+F.WHITE)
         alph = alph.split(" ")
         num = -1
@@ -127,7 +182,12 @@ MORE Functions COMING...
         except:
             print (F.RED+"[*] an error occured [*]")
 
-    def Bina_Alpha(self): #6
+
+
+
+
+
+    def Bina_Alpha(self): #7
         try:
             splita = input(F.YELLOW+"[*] Enter Binary: "+F.WHITE)
             splita = splita.split(" ")
@@ -140,7 +200,10 @@ MORE Functions COMING...
         except:
             print (F.RED+"[*] an error occured [*]")
 
-    def get_device_ip(self): #7
+
+
+
+    def get_device_ip(self): #8
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.connect(('192.255.255.255',1))
@@ -148,13 +211,21 @@ MORE Functions COMING...
         except:
             print(F.BLUE+sub.getoutput('ifconfig').split(" ")[22])
 
-    def cpu_info (self): #8
+
+
+
+
+
+    def cpu_info (self): #9
         try:
             sys("cat /proc/cpuinfo")
         except:
             print ("[*] an error occured [*]")
 
-    def open_server(self): #9
+
+
+
+    def open_server(self): #10
         print (F.YELLOW+"[*] Starting Server")
 
         tm.sleep(2)
@@ -184,7 +255,11 @@ MORE Functions COMING...
                 c.close()
                 quit(0)
 
-    def file_sys(self, option, file): #10
+
+
+
+
+    def file_sys(self, option, file): #11
         if option == "-C":
             if exists(file) == False:
                 data = input(F.YELLOW+"[*] Enter Data: "+F.WHITE)
@@ -286,7 +361,10 @@ MORE Functions COMING...
                 print (F.RED+"[*]File doesnt exists")
 
 
-    def send_mess(self, number): #11
+
+
+
+    def send_mess(self, number): #12
         try:
             message = input(F.YELLOW+"Message: "+F.WHITE).replace(" ", "%20")
             sys(f'xdg-open https://wa.me/{number}?text={message}')
@@ -294,38 +372,49 @@ MORE Functions COMING...
         except:
             print ("Error occured")
 
+
+
+
+
+#RUNNING ALL FUNCTIONS
 shark = shark()
 if __name__ == '__main__':
     shark.main()
     while True:
         data = inpu()
-        if "@get -ip" in data: #1
-            shark.get_ip(data.split()[2])
-        elif "@port -scan" in data: #2
-            shark.port_scan(data.split()[2])
-        elif "@bina -a" in data: #3
-            shark.Bina_Alpha()
-        elif "alpha -b" in data: #4
-            shark.Alpha_Bina()
-        elif "@num -b" in data: #5
-            shark.Num_Bina(data.split()[2], data.split()[3])
-        elif "@bina -n" in data: #6
-            shark.Bina_Num(data.split()[2], data.split()[3])
-        elif data == "@ip -details": #7
-            shark.get_device_ip()
-        elif data == "@cpu": #8
-            shark.cpu_info()
-        elif data == "@open -server": #9
-            shark.open_server()
-        elif "@file" in data: #10
-            shark.file_sys(data.split()[1], data.split()[2])
-        elif "@send -w" in data: #11
-            shark.send_mess(data.split()[2])
-        elif "@help" in data:
-            shark.help()
-        elif "@exit" in data:
-            print (F.RED+"[*] EXITING PROGRAM...")
-            tm.sleep(1)
-            quit(0)
-        else:
-            sys(data)
+        try:
+            #data = inpu()
+            if "@get -ip" in data: #1
+                shark.get_ip(data.split()[2])
+            elif "@port -scan" in data: #2
+                shark.port_scan(data.split()[2])
+            elif "@port--s -scan" in data: #3
+                shark.port_scan_sin(data.split()[2], data.split()[3])
+            elif "@bina -a" in data: #4
+                shark.Bina_Alpha()
+            elif "alpha -b" in data: #5
+                shark.Alpha_Bina()
+            elif "@num -b" in data: #6
+                shark.Num_Bina(data.split()[2], data.split()[3])
+            elif "@bina -n" in data: #7
+                shark.Bina_Num(data.split()[2], data.split()[3])
+            elif data == "@ip -details": #8
+                shark.get_device_ip()
+            elif data == "@cpu": #9
+                shark.cpu_info()
+            elif data == "@open -server": #10
+                shark.open_server()
+            elif "@file" in data: #11
+                shark.file_sys(data.split()[1], data.split()[2])
+            elif "@send -w" in data: #12
+                shark.send_mess(data.split()[2])
+            elif "@help" in data:
+                shark.help()
+            elif "@exit" in data:
+                print (F.RED+"[*] EXITING PROGRAM...")
+                tm.sleep(1)
+                break
+            else:
+                sys(data)
+        except:
+                print (F.RED+"[*] An error occured")
