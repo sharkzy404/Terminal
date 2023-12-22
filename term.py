@@ -10,7 +10,8 @@ import random as rd
 from os.path import exists
 import os
 import re
-
+import uuid
+import ipaddress
 
 #CLEAR SCREEN......
 sys("clear")
@@ -207,9 +208,19 @@ MORE Functions COMING...
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
             sock.connect(('192.255.255.255',1))
-            print (F.BLUE+sock.getsockname()[0])
+            print (F.CYAN+"[*] IP: "+F.BLUE+sock.getsockname()[0])
         except:
-            print(F.BLUE+sub.getoutput('ifconfig').split(" ")[22])
+            print(F.CYAN+"[*] IP: "+F.BLUE+sub.getoutput('ifconfig | grep netmask').split(" ")[9])
+        
+        hostname = socket.gethostname()
+        ip_address = socket.gethostbyname(hostname)
+        mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(5, -1, -1)])
+        ip_network = ipaddress.IPv4Network(ip_address, strict=False)
+        subnet = ip_network.network_address
+        net = ip_network.netmask
+        print(F.CYAN+"[*] MAC: "+F.BLUE+str(mac_address))
+        print(F.CYAN+"[*] SUBNET: "+F.BLUE+str(subnet))
+        print(F.CYAN+"[*] NETMASK: "+F.BLUE+str(net))
 
 
 
