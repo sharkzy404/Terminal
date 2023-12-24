@@ -29,9 +29,9 @@ def inpu():
 #DECLARING CLASS......
 class shark:
     def __init__(self):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.soc    = socket
-        self.sock   = socket.socket()
+        #Run OOP's
+        self.runner = "Runner"
+        self.soc = socket
 
     def main(self):
         data = """
@@ -59,12 +59,14 @@ class shark:
      Example: @alpha -b 
 [7]. Convert Binary to Alphabet: @bina -a 
      Example: @bina -a 
-[8]. To get device IP address: @ip -details
+[8]. To get device NETWORKS INFO: @ip -details
      Example: @ip -details
 [9]. To get cpu info: @cpu
      Example: @cpu
 [10]. To open server: @open -server
      Example: @open -server
+     Note: To exit chat any user can send "@bye"
+         : Only Accepts Telnet service for communication..
 [11].To create file: @file <option> <file_name>
      Options: -C create file
               -A append data to existsing file
@@ -90,9 +92,9 @@ MORE Functions COMING...
     def get_ip(self, host): #1
         try:
             data = self.soc.gethostbyname(host)
-            print (F.BLUE+f"{host}: {data}")
+            print (F.BLUE+f"[✓]{host}: {data}")
         except:
-            print (F.RED+"[*] Error, maybe invalid host or no network connection [*]")
+            print (F.RED+"[x]Error, maybe invalid host or no network connection [*]")
 
 
 
@@ -109,14 +111,14 @@ MORE Functions COMING...
                 check =  sock.connect_ex((ip, port))
                 if check == 0:
                     total_port += 1
-                    print (F.BLUE+f"port {port} opened for {ip}")
+                    print (F.BLUE+f"[✓]port {port} opened for {ip}")
                     sock.close()
                 else:
                     pass
                     sock.close()
             except:
                 break
-        print (F.GREEN+f"[*] Total port opened for {ip} is : {total_port}")
+        print (F.GREEN+f"[*]Total port opened for {ip} is : {total_port}")
         sock.close()
 
 
@@ -126,16 +128,16 @@ MORE Functions COMING...
     def port_scan_sin(self, ip, port): #3
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(0.09)
+            sock.settimeout(1)
             check = sock.connect_ex((ip, int(port)))
             if check == 0:
-                print (F.BLUE+f"[*] Port: {port} opened")
+                print (F.BLUE+f"[✓]Port: {port} opened")
                 sock.close()
             else:
-                print (F.BLUE+f"[*] Port: {port} closed")
+                print (F.BLUE+f"[x]Port: {port} closed")
                 sock.close()
         except:
-            print (F.RED+"[*] An error occured")
+            print (F.RED+"[x]An error occured")
             sock.close()
 
 
@@ -148,7 +150,7 @@ MORE Functions COMING...
             print (F.GREEN+"[*]OUTPUT"+F.BLUE)
             print (F.BLUE+str(int(binary, int(base))))
         except:
-            print (F.RED+"[*] an error occured [*]")
+            print (F.RED+"[x]An error occured")
 
 
 
@@ -161,13 +163,13 @@ MORE Functions COMING...
             print (F.GREEN+"[*]OUTPUT"+F.BLUE)
             print (F.BLUE+bin(num) [base: ])
         except:
-            print (F.RED+"[*] an error occured [*]")
+            print (F.RED+"[x]An error occured")
 
 
 
 
     def Alpha_Bina(self): #6
-        alph = input(F.YELLOW+"[*] Enter Text: "+F.WHITE)
+        alph = input(F.YELLOW+"[*]Enter Text: "+F.WHITE)
         alph = alph.split(" ")
         num = -1
         try:
@@ -181,7 +183,7 @@ MORE Functions COMING...
                 except:
                     break
         except:
-            print (F.RED+"[*] an error occured [*]")
+            print (F.RED+"[x]An error occured")
 
 
 
@@ -190,7 +192,7 @@ MORE Functions COMING...
 
     def Bina_Alpha(self): #7
         try:
-            splita = input(F.YELLOW+"[*] Enter Binary: "+F.WHITE)
+            splita = input(F.YELLOW+"[*]Enter Binary: "+F.WHITE)
             splita = splita.split(" ")
             print (F.GREEN+"[*]OUTPUT"+F.BLUE)
             for data in splita:
@@ -199,7 +201,7 @@ MORE Functions COMING...
                 print (charac, end = "")
             print ("\n")
         except:
-            print (F.RED+"[*] an error occured [*]")
+            print (F.RED+"[x]An error occured")
 
 
 
@@ -231,40 +233,41 @@ MORE Functions COMING...
         try:
             sys("cat /proc/cpuinfo")
         except:
-            print ("[*] an error occured [*]")
+            print ("[x]An error occured")
 
 
 
 
     def open_server(self): #10
-        print (F.YELLOW+"[*] Starting Server")
+        sock = socket.socket()
+        print (F.YELLOW+"[✓]Starting Server")
 
         tm.sleep(2)
         a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
-        ip = sub.getoutput('ifconfig').split(" ")[13]
+        ip = sub.getoutput('ifconfig | grep netmask').split(" ")[9]
         port = a3+a2+a1+a2+a3
-        print (F.BLUE+"Server Started")
+        print (F.BLUE+"[✓]Server Started")
 
         tm.sleep(1)
-        print (F.GREEN+f"IP: {ip}: PORT: {port}")
-        self.sock.bind(("0.0.0.0", int(port)))
-        self.sock.listen(5)
-        c, addr = self.sock.accept()
+        print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
+        sock.bind(("0.0.0.0", int(port)))
+        sock.listen(5)
+        c, addr = sock.accept()
 
         while True:
-            c.send(F.GREEN+"Waiting for incoming Message::\n".encode())
+            c.send("[*]Waiting for incoming Message::\n".encode())
             out_mes = input(F.YELLOW+"[*]Send-Message: ")
-            if out_mes == "bye":
+            if "@bye" in out_mes:
                 c.close()
-                quit(0)
-            c.send(f"Receiced message: {out_mes}\n[*]Send-Message: ".encode())
+                break
+            c.send(f"[*]Receiced message: {out_mes}\n[*]Send-Message: ".encode())
             print ("Message Sent\nWaiting for incoming Message::")
 
             inp_mes = c.recv(1024).decode()
             print (f"[*]Received-Message: {inp_mes}")
-            if inp_mes == "bye":
+            if "@bye" in inp_mes:
                 c.close()
-                quit(0)
+                break
 
 
 
@@ -273,54 +276,54 @@ MORE Functions COMING...
     def file_sys(self, option, file): #11
         if option == "-C":
             if exists(file) == False:
-                data = input(F.YELLOW+"[*] Enter Data: "+F.WHITE)
+                data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
                 open_file = open(file, "w")
                 open_file.write(data)
-                print (F.BLUE+"File created successfully")
+                print (F.BLUE+"[✓]File created successfully")
                 open_file.close()
             else:
                 print (F.RED+"[*]File already exists, wish to rewrite it")
-                opt = input(F.YELLOW+"Y/N: "+F.WHITE).upper()
+                opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
                 if opt == "N":
-                    print (F.BLUE+"[*]File was maintained")
+                    print (F.BLUE+"[✓]File was maintained")
                 elif opt == "Y":
-                    data = input(F.YELLOW+"[*] Enter Data: "+F.WHITE)
+                    data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
                     open_file = open(file, "w")
                     open_file.write(data)
-                    print (F.BLUE+"[*]File created successully")
+                    print (F.BLUE+"[✓]File created successully")
                     open_file.close()
                 else:
-                    print (F.RED+"[*]Error, try inputing details")
+                    print (F.RED+"[x]Error, try inputing details")
 
         elif option == "-A":
             try:
                 if exists(file):
-                    data = input(F.YELLOW+"[*] Enter Data: "+F.WHITE)
+                    data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
                     open_file = open(file, "a")
                     open_file.write(data)
                     open_file.close()
-                    print (F.BLUE+"[*]Done")
+                    print (F.BLUE+"[✓]Done")
                 else:
-                    print (F.RED+"[*]File doesnt exists")
+                    print (F.RED+"[x]File doesnt exists")
             except:
-                print (F.RED+"[*] an error occured [*]")
+                print (F.RED+"[x]An error occured")
         elif option == "-D":
             if exists(file):
                 os.remove(file)
-                print (F.BLUE+"[*] File deleted ")
+                print (F.BLUE+"[✓]File deleted ")
             else:
-                print (F.RED+"[*]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists")
         elif option == "-V":
             if exists(file):
-                print (F.BLUE+"[*]File exists")
+                print (F.BLUE+"[✓]File exists")
             else:
-                print (F.RED+"[*]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists")
         elif option == "-R":
             if exists(file):
                 open_file = open(file, "r")
                 print (F.BLUE+f"Data: {open_file.read()}")
             else:
-                print (F.RED+"[*]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists")
         elif option == "-ED":
             if exists(file):
                 open_file = open(file, "r")
@@ -343,11 +346,11 @@ MORE Functions COMING...
                         new_file.close()
                         print (F.BLUE+"[*]Decrypting File.....")
                         tm.sleep(1)
-                        print (F.BLUE+"[*]File Decrypted succesfully")
+                        print (F.BLUE+"[✓]File Decrypted succesfully")
                     elif opt == "N":
-                        print (F.BLUE+"[*]Ok")
+                        print (F.BLUE+"[✓]Ok")
                     else:
-                        print (F.RED+"[*]Error, invalid input")
+                        print (F.RED+"[x]Error, invalid input")
 
                 elif reg == None:
                     print (F.GREEN+"[*]File is in decrypted Format\n[*]Wish to encrypt")
@@ -363,13 +366,13 @@ MORE Functions COMING...
                         new_file.close()
                         print (F.BLUE+"[*]Encrpyting file.....")
                         tm.sleep(2)
-                        print (F.BLUE+"[*]File Encrypted successfully")
+                        print (F.BLUE+"[✓]File Encrypted successfully")
                     elif opt == "N":
-                        print (F.BLUE+"[*]Ok")
+                        print (F.BLUE+"[✓]Ok")
                     else:
-                        print (F.RED+"[*]Error, invalid input")
+                        print (F.RED+"[x]Error, invalid input")
             else:
-                print (F.RED+"[*]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists")
 
 
 
@@ -381,7 +384,7 @@ MORE Functions COMING...
             sys(f'xdg-open https://wa.me/{number}?text={message}')
             print (F.BLUE+"[*]OPENING WHATSAPP....")
         except:
-            print ("Error occured")
+            print ("[x]An Error occured")
 
 
 
@@ -422,10 +425,10 @@ if __name__ == '__main__':
             elif "@help" in data:
                 shark.help()
             elif "@exit" in data:
-                print (F.RED+"[*] EXITING PROGRAM...")
+                print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
                 break
             else:
                 sys(data)
         except:
-                print (F.RED+"[*] An error occured")
+                print (F.RED+"[x] AN ERROR OCCURED")
