@@ -137,7 +137,7 @@ MORE Functions COMING...
                 print (F.BLUE+f"[x]Port: {port} closed")
                 sock.close()
         except:
-            print (F.RED+"[x]An error occured")
+            print (F.RED+"[x]An error occured, Internet Issue")
             sock.close()
 
 
@@ -207,12 +207,32 @@ MORE Functions COMING...
 
 
     def get_device_ip(self): #8
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.settimeout(2)
         try:
-            sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            sock.connect(('192.255.255.255',1))
-            print (F.CYAN+"[*] IP: "+F.BLUE+sock.getsockname()[0])
+            if sock.connect_ex(("google.com", 80)) == 0:
+                curl = sub.run(['curl', 'ifconfig.me'], capture_output=True, text=True)
+                curl = curl.stdout.strip()
+                if curl != "<HTML></HTML>":
+                    print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+str(curl))
+                else:
+                    print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"false")
         except:
-            print(F.CYAN+"[*] IP: "+F.BLUE+sub.getoutput('ifconfig | grep netmask').split(" ")[9])
+            print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"no internet network")
+
+        try:
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+sub.getoutput('ifconfig | grep netmask').split(" ")[9])
+        except:
+            print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+"false")
+        try:
+            print(F.CYAN+"[*] IPV6: "+F.BLUE+sub.getoutput('ifconfig | grep inet6').split(" ")[24])
+        except:
+            print(F.CYAN+"[*] IPV6: "+F.BLUE+"false")
+        try:
+            print(F.CYAN+"[*] VPN TUNNEL: "+F.BLUE+sub.getoutput('ifconfig | grep destination').split(" ")[15])
+        except:
+            print(F.CYAN+"[*] VPN TUNNEL: "+F.BLUE+"false")
         
         hostname = socket.gethostname()
         ip_address = socket.gethostbyname(hostname)
@@ -223,6 +243,7 @@ MORE Functions COMING...
         print(F.CYAN+"[*] MAC: "+F.BLUE+str(mac_address))
         print(F.CYAN+"[*] SUBNET: "+F.BLUE+str(subnet))
         print(F.CYAN+"[*] NETMASK: "+F.BLUE+str(net))
+        sock.close()
 
 
 
@@ -239,6 +260,7 @@ MORE Functions COMING...
 
 
     def open_server(self): #10
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock = socket.socket()
         print (F.YELLOW+"[✓]Starting Server")
 
@@ -247,9 +269,9 @@ MORE Functions COMING...
         ip = sub.getoutput('ifconfig | grep netmask').split(" ")[9]
         port = a3+a2+a1+a2+a3
         print (F.BLUE+"[✓]Server Started")
-
         tm.sleep(1)
-        print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
+        print (F.GREEN+f"[*]PRIVATE-IP: {ip}: [*]PORT: {port}")
+    
         sock.bind(("0.0.0.0", int(port)))
         sock.listen(5)
         c, addr = sock.accept()
