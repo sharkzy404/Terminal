@@ -12,10 +12,10 @@ import os
 import re
 import uuid
 import ipaddress
+import requests as r
 
 #CLEAR SCREEN......
 sys("clear")
-
 
 
 def inpu():
@@ -207,32 +207,41 @@ MORE Functions COMING...
 
 
     def get_device_ip(self): #8
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.settimeout(2)
+        #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #sock.settimeout(2)
+        url = "https://github.com"
         try:
-            if sock.connect_ex(("google.com", 80)) == 0:
+            #if sock.connect_ex(("google.com", 80)) == 0:
+            if r.get(url, timeout=1):
                 curl = sub.run(['curl', 'ifconfig.me'], capture_output=True, text=True)
                 curl = curl.stdout.strip()
                 if curl != "<HTML></HTML>":
                     print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+str(curl))
                 else:
-                    print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"false")
+                    print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"inactive")
+         
+            else:
+                print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"Cant connect to Server")
         except:
-            print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"no internet network")
+            print(F.CYAN+"[*] PUBLIC IP: "+F.BLUE+"Cant connect to Server")
 
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+sub.getoutput('ifconfig | grep netmask').split(" ")[9])
         except:
-            print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+"false")
+            print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+"inactive")
         try:
-            print(F.CYAN+"[*] IPV6: "+F.BLUE+sub.getoutput('ifconfig | grep inet6').split(" ")[24])
+            print(F.CYAN+"[*] IPV6:INET: "+F.BLUE+sub.getoutput('ifconfig | grep inet6').split(" ")[24])
         except:
-            print(F.CYAN+"[*] IPV6: "+F.BLUE+"false")
+            print(F.CYAN+"[*] IPV6:INET: "+F.BLUE+"inactive")
+        try:
+            print(F.CYAN+"[*] IPV6:WLAN: "+F.BLUE+sub.getoutput('ifconfig | grep inet').split(" ")[24])
+        except:
+            print(F.CYAN+"[*] IPV6:WLAN: "+F.BLUE+"false")
         try:
             print(F.CYAN+"[*] VPN TUNNEL: "+F.BLUE+sub.getoutput('ifconfig | grep destination').split(" ")[15])
         except:
-            print(F.CYAN+"[*] VPN TUNNEL: "+F.BLUE+"false")
+            print(F.CYAN+"[*] VPN TUNNEL: "+F.BLUE+"inactive")
         
         hostname = socket.gethostname()
         ip_address = socket.gethostbyname(hostname)
