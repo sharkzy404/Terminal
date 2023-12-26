@@ -107,7 +107,7 @@ MORE Functions COMING...
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 port += 1
-                sock.settimeout(0.09)
+                sock.settimeout(0.5)
                 check =  sock.connect_ex((ip, port))
                 if check == 0:
                     total_port += 1
