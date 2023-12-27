@@ -231,6 +231,15 @@ MORE Functions COMING...
         except:
             print(F.CYAN+"[*] PRIVATE IP: "+F.BLUE+"inactive")
         try:
+            ip_wl = sub.getoutput('ifconfig | grep netmask').split(" ")[21]
+            check = re.search(r'(\d+\.){3}', ip_wl)
+            if check:
+                print (F.CYAN+"[*] IP:WLAN: "+F.BLUE+ip_wl)
+            else:
+                print(F.CYAN+"[*] IP:WLAN: "+F.BLUE+"inactive")
+        except:
+            print(F.CYAN+"[*] IP:WLAN: "+F.BLUE+"inactive")
+        try:
             print(F.CYAN+"[*] IPV6:INET: "+F.BLUE+sub.getoutput('ifconfig | grep inet6').split(" ")[24])
         except:
             print(F.CYAN+"[*] IPV6:INET: "+F.BLUE+"inactive")
@@ -259,7 +268,7 @@ MORE Functions COMING...
 
 
 
-    def cpu_info (self): #9
+    def cpu_info(self): #9
         try:
             sys("cat /proc/cpuinfo")
         except:
@@ -271,15 +280,28 @@ MORE Functions COMING...
     def open_server(self): #10
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock = socket.socket()
+        print (F.CYAN+"[NOTE]: CONNECT VIA TELNET: ONLY SUPPORT WLAN")  
         print (F.YELLOW+"[✓]Starting Server")
 
         tm.sleep(2)
         a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
-        ip = sub.getoutput('ifconfig | grep netmask').split(" ")[9]
+        try:
+            ip_wl = sub.getoutput('ifconfig | grep inet').split(" ")[51]
+        except:
+            pass
+        ip_in = sub.getoutput('ifconfig | grep inet').split(" ")[9]
+        try:
+            check = re.search(r'(\d+\.){3}', ip_wl)
+            if check:
+                ip = ip_wl
+            else:
+                ip = ip_in
+        except:
+            ip = ip_in
         port = a3+a2+a1+a2+a3
         print (F.BLUE+"[✓]Server Started")
         tm.sleep(1)
-        print (F.GREEN+f"[*]PRIVATE-IP: {ip}: [*]PORT: {port}")
+        print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
     
         sock.bind(("0.0.0.0", int(port)))
         sock.listen(5)
