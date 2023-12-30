@@ -102,34 +102,34 @@ MORE Functions COMING...
 
     def port_scan(self, ip): #2
         data = sub.getoutput(f'ping -w 1 {ip} ')
+
         try:
             re_search = re.search(r'(time=)(\d+)', data)
             interval = int(re_search.group(2))/1000
             print (F.CYAN+"[*]STARTING SCANNING IN TIME INTERVAL: "+F.YELLOW+str(interval))
+
+
+            total_port = 0
+            port = -1
+            for i in range(65354):
+                try:
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    port += 1
+                    sock.settimeout(interval)
+                    check =  sock.connect_ex((ip, port))
+                    if check == 0:
+                        total_port += 1
+                        print (F.BLUE+f"[✓]port {port} opened for {ip}")
+                        sock.close()
+                    else:
+                        pass
+                        sock.close()
+                except:
+                    break
+            print (F.GREEN+f"[*]Total port opened for {ip} is : {total_port}")
+            sock.close()
         except:
-            interval = 0.0001
             print(F.RED+"[OPP's]SERVER NOT RECHEABLE :'( ")
-
-
-        total_port = 0
-        port = -1
-        for i in range(65354):
-            try:
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                port += 1
-                sock.settimeout(interval)
-                check =  sock.connect_ex((ip, port))
-                if check == 0:
-                    total_port += 1
-                    print (F.BLUE+f"[✓]port {port} opened for {ip}")
-                    sock.close()
-                else:
-                    pass
-                    sock.close()
-            except:
-                break
-        print (F.GREEN+f"[*]Total port opened for {ip} is : {total_port}")
-        sock.close()
 
 
     
@@ -146,6 +146,7 @@ MORE Functions COMING...
             else:
                 print (F.BLUE+f"[x]Port: {port} closed")
                 sock.close()
+
         except:
             print (F.RED+"[x]An error occured, Internet Issue")
             sock.close()
