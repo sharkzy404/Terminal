@@ -101,13 +101,23 @@ MORE Functions COMING...
 
 
     def port_scan(self, ip): #2
+        data = sub.getoutput(f'ping -w 1 {ip} ')
+        try:
+            re_search = re.search(r'(time=)(\d+)', data)
+            interval = int(re_search.group(2))/1000
+            print (F.CYAN+"[*]STARTING SCANNING IN TIME INTERVAL: "+F.YELLOW+str(interval))
+        except:
+            interval = 0.0001
+            print(F.RED+"[OPP's]SERVER NOT RECHEABLE :'( ")
+
+
         total_port = 0
         port = -1
         for i in range(65354):
             try:
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 port += 1
-                sock.settimeout(0.5)
+                sock.settimeout(interval)
                 check =  sock.connect_ex((ip, port))
                 if check == 0:
                     total_port += 1
@@ -122,13 +132,13 @@ MORE Functions COMING...
         sock.close()
 
 
-
+    
 
 
     def port_scan_sin(self, ip, port): #3
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(1)
+            sock.settimeout(0.5)
             check = sock.connect_ex((ip, int(port)))
             if check == 0:
                 print (F.BLUE+f"[✓]Port: {port} opened")
