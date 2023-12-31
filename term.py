@@ -13,6 +13,7 @@ import re
 import uuid
 import ipaddress
 import requests as r
+from tqdm import tqdm
 
 #CLEAR SCREEN......
 sys("clear")
@@ -77,7 +78,9 @@ class shark:
      Example: @file -CADRV(ED) filename.txt
 [12].To send message to a whatsapp contact: @send -w <number>
     Example: @send -w +1234567890
-
+[13].To send file via wifi: @send -file
+     To reciev file       : @recv -file <host> <port>
+     Example: @recv @file 127.0.0.1 12345
 [13]. To exit program: @exit
 
 MORE Functions COMING...
@@ -452,6 +455,89 @@ MORE Functions COMING...
 
 
 
+    def send_file(self): #13
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
+        port = a3+a2+a1+a2+a3
+        sock.bind(('0.0.0.0', int(port)))
+        print (F.BLUE+"[✓]SERVER STARTED")
+        try:
+            ipw = sub.getoutput('ifconfig | grep netmask').split(" ")[21]
+            check = re.search(r'(\d+\.){3}', ipw)
+            if check:
+                ip = ipw
+            else:
+                ip = sub.getoutput('ifconfig | grep netmask').split(" ")[9]
+
+        except:
+            ip = sub.getoutput('ifconfig | grep netmask').split(" ")[9]
+        print(F.GREEN+f'[*]IP: {ip} : PORT {port}'+F.CYAN)
+
+        sock.listen(5)
+
+        file_path = input(F.YELLOW+"[%]/path/to/file: "+F.WHITE)
+        print (F.BLUE+"[*]WAITING FOR USER TO RECIEVE")
+        size = open(file_path, 'rb')
+        size = len(size.read())
+
+        num = 0
+        while True:
+            try:
+                num += 1
+                split1 = file_path.split("/")
+                file = split1[num]
+
+            except:
+                break
+
+        c, addr = sock.accept()
+        c.send(f'[*]INCOMING FILE! [NAME: {file}] [SIZE: {size}bytes]\n'.encode())
+        choice = c.recv(1024).decode()
+        if "YES" in choice: 
+            c.send(str(size).encode())
+            print (F.CYAN+"") 
+            with tqdm(total=size, unit='B', unit_scale=True, desc="Uploading", ascii=True) as progress_bar:
+                with open(file_path, 'rb') as file:
+                    for data in iter(lambda: file.read(1024), b''):
+                        c.send(data)
+                        progress_bar.update(len(data))
+            c.close()
+            print(F.BLUE+"[✓]FILE UPLOADED")
+        else:
+            c.close()
+
+
+    def recv_file(self, ip, port): #14
+        c_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        c_socket.connect((ip, int(port)))
+        print(F.BLUE+"[✓]CONNECTED TO SERVER")
+        #tm.sleep(1)
+        data = c_socket.recv(1024).decode()
+        print (F.BLUE+data)
+
+        file = input(F.YELLOW+"[%]/save/to/path/to/file: "+F.WHITE)
+
+        choice = input(F.YELLOW+"[*]WISH TO ACCEPT: Y/N: "+F.WHITE).upper()
+        if choice == "Y":
+            c_socket.send("YES".encode())
+            size = c_socket.recv(1024).decode()
+            size = int(size)
+            print (F.CYAN+"")
+            with tqdm(total=size, unit='B', unit_scale=True, desc="Downloading", ascii=True) as progress_bar:
+                with open(file, 'wb') as new_file:
+                    while True:
+                        rec = c_socket.recv(1024)
+                        if not rec:
+                            break
+                            c_socket.close()
+                        new_file.write(bytes(rec))
+                        progress_bar.update(len(rec))
+            c_socket.close()
+            print (F.BLUE+"[✓]FILE DOWNLOADED")
+            
+
+
+
 
 
 #RUNNING ALL FUNCTIONS
@@ -486,8 +572,12 @@ if __name__ == '__main__':
                 shark.file_sys(data.split()[1], data.split()[2])
             elif "@send -w" in data: #12
                 shark.send_mess(data.split()[2])
-            elif "@help" in data:
+            elif "@help" in data: #13
                 shark.help()
+            elif data == "@send -file": #14
+                shark.send_file()
+            elif "@recv -file" in data: #15
+                shark.recv_file(data.split()[2], data.split()[3])
             elif "@exit" in data:
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
