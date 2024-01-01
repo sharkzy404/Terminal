@@ -1,7 +1,12 @@
 from os import system as sys
 
 try:
-    sys("pip install colorama, re, xdg, tqdm")
+    sys("pip install colorama")
+    sys("pip install re")
+    sys("pip install tqdm")
+    sys("pip install xdg")
+    sys("pip install uuid")
+    sys("pip install ipaddress")
 except:
     print ("[*] An error occured")
 
