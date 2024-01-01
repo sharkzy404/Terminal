@@ -2,7 +2,7 @@ from os import system as sys
 
 try:
     sys("pip install colorama")
-    sys("pip install re")
+    sys("pip install regex")
     sys("pip install tqdm")
     sys("pip install xdg")
     sys("pip install uuid")
