@@ -7,6 +7,7 @@ try:
     sys("pip install xdg")
     sys("pip install uuid")
     sys("pip install ipaddress")
+    sys("pip install requests")
 except:
     print ("[*] An error occured")
 
