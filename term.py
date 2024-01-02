@@ -14,9 +14,16 @@ import uuid
 import ipaddress
 import requests as r
 from tqdm import tqdm
+import platform as pt
 
 #CLEAR SCREEN......
 sys("clear")
+pt = pt.system()
+if pt != "Linux":
+    print(F.RED+"[*]OPERARING SYSTEM NOT SUPPORTED")
+    quit(0)
+else:
+    pass
 
 
 def inpu():
@@ -81,6 +88,7 @@ class shark:
 [13].To send file via wifi: @send -file
      To reciev file       : @recv -file <host> <port>
      Example: @recv @file 127.0.0.1 12345
+     NOTE   : Program cant send File with Permission..
 [13]. To exit program: @exit
 
 MORE Functions COMING...
@@ -496,7 +504,7 @@ MORE Functions COMING...
         if "YES" in choice: 
             c.send(str(size).encode())
             print (F.CYAN+"") 
-            with tqdm(total=size, unit='B', unit_scale=True, desc="Uploading", ascii=True) as progress_bar:
+            with tqdm(total=size, unit='B', unit_scale=True, desc="Uploading", ascii=False) as progress_bar:
                 with open(file_path, 'rb') as file:
                     for data in iter(lambda: file.read(1024), b''):
                         c.send(data)
@@ -523,7 +531,7 @@ MORE Functions COMING...
             size = c_socket.recv(1024).decode()
             size = int(size)
             print (F.CYAN+"")
-            with tqdm(total=size, unit='B', unit_scale=True, desc="Downloading", ascii=True) as progress_bar:
+            with tqdm(total=size, unit='B', unit_scale=True, desc="Downloading", ascii=False) as progress_bar:
                 with open(file, 'wb') as new_file:
                     while True:
                         rec = c_socket.recv(1024)
