@@ -303,11 +303,9 @@ MORE Functions COMING...
         ip_address = socket.gethostbyname(hostname)
         mac_address = ':'.join(['{:02x}'.format((uuid.getnode() >> elements) & 0xff) for elements in range(5, -1, -1)])
         ip_network = ipaddress.IPv4Network(ip_address, strict=False)
-        subnet = ip_network.network_address
         net = ip_network.netmask
         print(F.CYAN+"[*] MAC: "+F.BLUE+str(mac_address))
-        print(F.CYAN+"[*] SUBNET: "+F.BLUE+str(subnet))
-        print(F.CYAN+"[*] NETMASK: "+F.BLUE+str(net))
+        print(F.CYAN+"[*] SUBNET: "+F.BLUE+str(net))
         sock.close()
 
 
@@ -632,7 +630,7 @@ MORE Functions COMING...
 
         while True:
             data = input(F.CYAN+"\n[shell]•••→ "+F.WHITE)
-            if data == "exist":
+            if data == "exit":
                 c.send(data.encode())
                 print(F.RED+"[*]CLOSING SHELL")
                 tm.sleep(1)
