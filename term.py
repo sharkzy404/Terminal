@@ -27,10 +27,13 @@ else:
 
 
 def inpu():
-    print ("\n")
-    subt = sub.getoutput("whoami")
-    data =  input(F.YELLOW+f".———[{subt}@Shark]\n|\n°———> "+ F.GREEN)
-    return data
+    try:
+        print ("\n")
+        subt = sub.getoutput("whoami")
+        data =  input(F.YELLOW+f".———[{subt}@Shark]\n|\n°———> "+ F.GREEN)
+        return data
+    except:
+        print (F.RED+"!!!!!")
 
 
 
