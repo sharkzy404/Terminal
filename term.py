@@ -44,37 +44,50 @@ class shark:
     def main(self):
         data = """
                    Welcome To Mr.Shark Terminal"
-                   For help and functions: @help """
+                   For help and functions: @help
+                    ctrl+c to close if stuck  """
         print (F.GREEN+data)
     
 
 
 
     #HELP LIST FUNCTION.......
-    def help(self):
+    def help(self): #1
         tools = """
 [1]. Getting Ip address: @get -ip [target]
      Example: @get -ip google.com
+
 [2]. Port scanning multiple: @port -scan [target]
      Example: @port -scan 127.0.0.1
+
 [3]. Port scanning single: @port -scan -s [target] [port]
      Example: @port--s -scan 127.0.0.1 80
+
 [4]. Convert Number to Binary: @num -b [number] [base]
      Example: @num -b 2000 2
+
 [5]. Convert Binary to Number: @bina -n [binary] [base]
      Example: @bina -n 1011101010 2
+
 [6]. Convert Alphabet to Binary: @alpha -b
      Example: @alpha -b 
+
 [7]. Convert Binary to Alphabet: @bina -a 
      Example: @bina -a 
+
 [8]. To get device NETWORKS INFO: @ip -details
      Example: @ip -details
+
 [9]. To get cpu info: @cpu
      Example: @cpu
-[10]. To open server: @open -server
-     Example: @open -server
-     Note: To exit chat any user can send "@bye"
-         : Only Accepts Telnet service for communication..
+
+[10].To start wifi chat room: 
+      HOST   : @open -server
+      CLIENT : @con -server <ip> <port>
+      Example: @con -server 127.0.0.1 12345 
+      Note   : To exit chat any user can input "@bye"..
+             : Doesn't support telnet 
+
 [11].To create file: @file <option> <file_name>
      Options: -C create file
               -A append data to existsing file
@@ -83,12 +96,24 @@ class shark:
               -V check if file exists
               -ED encrypt/decrypt file
      Example: @file -CADRV(ED) filename.txt
+
 [12].To send message to a whatsapp contact: @send -w <number>
     Example: @send -w +1234567890
+
 [13].To send file via wifi: @send -file
-     To reciev file       : @recv -file <host> <port>
+     To recieve file       : @recv -file <host> <port>
      Example: @recv @file 127.0.0.1 12345
      NOTE   : Program cant send File with Permission..
+            : Doesn't suppport telnet
+
+[14].To start remote shell via wifi::
+     HOST   : @shell -host
+     CLIENT : @shell -client <ip> <port>
+     Example: @shell -client 127.0.0.1 12345
+     NOTRlE : Doesn't support telnet
+     
+
+
 [13]. To exit program: @exit
 
 MORE Functions COMING...
@@ -100,7 +125,7 @@ MORE Functions COMING...
 
 
 
-    def get_ip(self, host): #1
+    def get_ip(self, host): #2
         try:
             data = self.soc.gethostbyname(host)
             print (F.BLUE+f"[✓]{host}: {data}")
@@ -111,7 +136,7 @@ MORE Functions COMING...
 
 
 
-    def port_scan(self, ip): #2
+    def port_scan(self, ip): #3
         data = sub.getoutput(f'ping -w 1 {ip} ')
 
         try:
@@ -146,7 +171,7 @@ MORE Functions COMING...
     
 
 
-    def port_scan_sin(self, ip, port): #3
+    def port_scan_sin(self, ip, port): #4
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(0.5)
@@ -167,7 +192,7 @@ MORE Functions COMING...
 
 
 
-    def Bina_Num(self, binary, base): #4
+    def Bina_Num(self, binary, base): #5
         try:
             print (F.GREEN+"[*]OUTPUT"+F.BLUE)
             print (F.BLUE+str(int(binary, int(base))))
@@ -178,7 +203,7 @@ MORE Functions COMING...
 
 
 
-    def Num_Bina(self, num, base): #5
+    def Num_Bina(self, num, base): #6
         try:
             num = int(num)
             base = int(base)
@@ -190,7 +215,7 @@ MORE Functions COMING...
 
 
 
-    def Alpha_Bina(self): #6
+    def Alpha_Bina(self): #7
         alph = input(F.YELLOW+"[*]Enter Text: "+F.WHITE)
         alph = alph.split(" ")
         num = -1
@@ -212,7 +237,7 @@ MORE Functions COMING...
 
 
 
-    def Bina_Alpha(self): #7
+    def Bina_Alpha(self): #8
         try:
             splita = input(F.YELLOW+"[*]Enter Binary: "+F.WHITE)
             splita = splita.split(" ")
@@ -228,7 +253,7 @@ MORE Functions COMING...
 
 
 
-    def get_device_ip(self): #8
+    def get_device_ip(self): #9
         #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #sock.settimeout(2)
         url = "https://github.com"
@@ -290,7 +315,7 @@ MORE Functions COMING...
 
 
 
-    def cpu_info(self): #9
+    def cpu_info(self): #10
         try:
             sys("cat /proc/cpuinfo")
         except:
@@ -299,13 +324,12 @@ MORE Functions COMING...
 
 
 
-    def open_server(self): #10
+    def open_server(self): #11
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock = socket.socket()
-        print (F.CYAN+"[NOTE]: CONNECT VIA TELNET: ONLY SUPPORT WLAN")  
-        print (F.YELLOW+"[✓]Starting Server")
+        #sock = socket.socket()
+        print (F.CYAN+"[NOTE]: ONLY SUPPORT WLAN")      
 
-        tm.sleep(2)
+        tm.sleep(1)
         a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
         try:
             ip_wl = sub.getoutput('ifconfig | grep inet').split(" ")[51]
@@ -321,7 +345,7 @@ MORE Functions COMING...
         except:
             ip = ip_in
         port = a3+a2+a1+a2+a3
-        print (F.BLUE+"[✓]Server Started")
+        print (F.BLUE+"[✓]SERVER STARTED")
         tm.sleep(1)
         print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
     
@@ -330,25 +354,60 @@ MORE Functions COMING...
         c, addr = sock.accept()
 
         while True:
-            c.send("[*]Waiting for incoming Message::\n".encode())
-            out_mes = input(F.YELLOW+"[*]Send-Message: ")
-            if "@bye" in out_mes:
+            sen = input(F.CYAN+"[*]SEND-MESSAGE: "+F.WHITE)
+            c.send(sen.encode())
+            print (F.BLUE+"[✓]MESSAGE SENT")
+            print (F.GREEN+"[*]WAITING FOR INCOMING MESSAGE")
+            if sen == "@bye":
+                tm.sleep(1)
+                print (F.RED+"[*]CLOSING CHAT")
                 c.close()
                 break
-            c.send(f"[*]Receiced message: {out_mes}\n[*]Send-Message: ".encode())
-            print ("Message Sent\nWaiting for incoming Message::")
-
-            inp_mes = c.recv(1024).decode()
-            print (f"[*]Received-Message: {inp_mes}")
-            if "@bye" in inp_mes:
+            rec = c.recv(20480).decode()
+            print (F.CYAN+"[*]RECEIVED-MESSAGE: ",F.WHITE+rec)
+            if rec == "@bye":
+                tm.sleep(1)
+                print (F.RED+"[*]USER CLOSED CHAT")
                 c.close()
                 break
+            
 
 
 
 
 
-    def file_sys(self, option, file): #11
+    def connect_server(self, ip, port): #12
+         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+         sock.connect((ip, int(port)))
+            
+         print (F.BLUE+"[✓]CONNECTED TO SERVER")
+         tm.sleep(1)
+         while True:
+             print(F.GREEN+"[*]WAITING FOR INCOMING MESSAGE")
+             rec = sock.recv(20480).decode()
+             print (F.CYAN+"RECIEVED-MESSAGE: "+F.WHITE+rec)
+             if rec == "@bye":
+                 tm.sleep(1)
+                 print(F.RED+"[*]USER CLOSED CHAT")
+                 sock.close()
+                 break
+             sen = input(F.CYAN+"SEND-MESSAGE: "+F.WHITE)
+             sock.send(sen.encode())
+             print (F.BLUE+"[✓]MESSAGE SENT")
+             if sen == "@bye":
+                 print (F.RED+"[*]CLOSING CHAT")
+                 tm.sleep(1)
+                 sock.close()
+                 break
+
+
+
+
+
+
+
+
+    def file_sys(self, option, file): #13
         if option == "-C":
             if exists(file) == False:
                 data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
@@ -453,7 +512,7 @@ MORE Functions COMING...
 
 
 
-    def send_mess(self, number): #12
+    def send_mess(self, number): #14
         try:
             message = input(F.YELLOW+"Message: "+F.WHITE).replace(" ", "%20")
             sys(f'xdg-open https://wa.me/{number}?text={message}')
@@ -463,7 +522,7 @@ MORE Functions COMING...
 
 
 
-    def send_file(self): #13
+    def send_file(self): #15
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
         port = a3+a2+a1+a2+a3
@@ -515,7 +574,7 @@ MORE Functions COMING...
             c.close()
 
 
-    def recv_file(self, ip, port): #14
+    def recv_file(self, ip, port): #16
         c_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         c_socket.connect((ip, int(port)))
         print(F.BLUE+"[✓]CONNECTED TO SERVER")
@@ -542,6 +601,71 @@ MORE Functions COMING...
                         progress_bar.update(len(rec))
             c_socket.close()
             print (F.BLUE+"[✓]FILE DOWNLOADED")
+
+
+    def shell_host(self): #17
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        tm.sleep(1)
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
+        try:
+            ip_wl = sub.getoutput('ifconfig | grep inet').split(" ")[51]
+        except:
+            pass
+        ip_in = sub.getoutput('ifconfig | grep inet').split(" ")[9]
+        try:
+            check = re.search(r'(\d+\.){3}', ip_wl)
+            if check:
+                ip = ip_wl
+            else:
+                ip = ip_in
+        except:
+            ip = ip_in
+        port = a3+a2+a1+a2+a3
+        print (F.BLUE+"[✓]SHELL HOST STARTED")
+        tm.sleep(1)
+        print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
+
+        sock.bind(("0.0.0.0", int(port)))
+        sock.listen(5)
+        c, addr = sock.accept()
+        print (F.GREEN+"[✓]CLIENT CONNECTED")
+
+        while True:
+            data = input(F.CYAN+"\n[shell]•••→ "+F.WHITE)
+            if data == "exist":
+                c.send(data.encode())
+                print(F.RED+"[*]CLOSING SHELL")
+                tm.sleep(1)
+                c.close()
+                break
+            c.send(data.encode())
+            rec = c.recv(51200).decode()
+            print(F.WHITE+rec)
+
+
+    def shell_client(self, ip, port): #18
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((ip, int(port)))
+        print(F.BLUE+"[✓]CONNECTED TO HOST")
+        tm.sleep(1)
+        print(F.CYAN+"[*]SHELL ACTIVITY IN PROGRESS")
+        
+        while True:
+            data = sock.recv(1024).decode()
+            if data == "exit":
+                print (F.RED+"[*]CLOSING SHELL")
+                tm.sleep(1)
+                sock.close()
+                break
+            decode_data = sub.getoutput(data)
+            sock.send(decode_data.encode())
+
+
+
+
+
+
+
             
 
 
@@ -556,37 +680,43 @@ if __name__ == '__main__':
         data = inpu()
         try:
             #data = inpu()
-            if "@get -ip" in data: #1
-                shark.get_ip(data.split()[2])
-            elif "@port -scan" in data: #2
-                shark.port_scan(data.split()[2])
-            elif "@port--s -scan" in data: #3
-                shark.port_scan_sin(data.split()[2], data.split()[3])
-            elif "@bina -a" in data: #4
-                shark.Bina_Alpha()
-            elif "alpha -b" in data: #5
-                shark.Alpha_Bina()
-            elif "@num -b" in data: #6
-                shark.Num_Bina(data.split()[2], data.split()[3])
-            elif "@bina -n" in data: #7
-                shark.Bina_Num(data.split()[2], data.split()[3])
-            elif data == "@ip -details": #8
-                shark.get_device_ip()
-            elif data == "@cpu": #9
-                shark.cpu_info()
-            elif data == "@open -server": #10
-                shark.open_server()
-            elif "@file" in data: #11
-                shark.file_sys(data.split()[1], data.split()[2])
-            elif "@send -w" in data: #12
-                shark.send_mess(data.split()[2])
-            elif "@help" in data: #13
+            if data == "@help": #1
                 shark.help()
-            elif data == "@send -file": #14
+            elif "@get -ip" in data: #2
+                shark.get_ip(data.split()[2])
+            elif "@port -scan" in data: #3
+                shark.port_scan(data.split()[2])
+            elif "@port--s -scan" in data: #4
+                shark.port_scan_sin(data.split()[2], data.split()[3])
+            elif "@bina -a" in data: #5
+                shark.Bina_Alpha()
+            elif "alpha -b" in data: #6
+                shark.Alpha_Bina()
+            elif "@num -b" in data: #7
+                shark.Num_Bina(data.split()[2], data.split()[3])
+            elif "@bina -n" in data: #8
+                shark.Bina_Num(data.split()[2], data.split()[3])
+            elif data == "@ip -details": #9
+                shark.get_device_ip()
+            elif data == "@cpu": #10
+                shark.cpu_info()
+            elif data == "@open -server": #11
+                shark.open_server()
+            elif "@con -server" in data: #12
+                shark.connect_server(data.split()[2], data.split()[3])
+            elif "@file" in data: #13
+                shark.file_sys(data.split()[1], data.split()[2])
+            elif "@send -w" in data: #14
+                shark.send_mess(data.split()[2])
+            elif data == "@send -file": #15
                 shark.send_file()
-            elif "@recv -file" in data: #15
+            elif "@recv -file" in data: #16
                 shark.recv_file(data.split()[2], data.split()[3])
-            elif "@exit" in data:
+            elif data == "@shell -host":
+                shark.shell_host()
+            elif "@shell -client" in data:
+                shark.shell_client(data.split()[2], data.split()[3])
+            elif "@exit" in data: #00
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
                 break
