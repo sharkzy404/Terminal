@@ -16,7 +16,7 @@ import requests as r
 from tqdm import tqdm
 import platform as pt
 
-#CLEAR SCREEN......
+#CLEAR SCREEN........
 sys("clear")
 pt = pt.system()
 if pt != "Linux":
