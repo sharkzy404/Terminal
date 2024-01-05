@@ -16,7 +16,7 @@ import requests as r
 from tqdm import tqdm
 import platform as pt
 
-#CLEAR SCREEN........
+#CLEAR SCREEN......
 sys("clear")
 pt = pt.system()
 if pt != "Linux":
@@ -40,8 +40,8 @@ def inpu():
             except:
                 break
         
-
-        data =  input(F.YELLOW+f".———[{subt}@Shark]---[~/{new_path}]••<>\n|\n°———> "+ F.GREEN)
+        s = F.BLUE+"$"
+        data =  input(F.YELLOW+f".———[{subt}@Shark]---[~/{new_path}]\n|\n°———{s} "+ F.GREEN)
         return data
     except:
         print (F.RED+"!!!!!")
@@ -748,7 +748,7 @@ if __name__ == '__main__':
                 except:
                     print ("Dir not found")
             else:
-                print (F.CYAN+"")
+                print (F.WHITE+"")
                 sys(data)
         except:
                 print (F.RED+"[x] AN ERROR OCCURED")
