@@ -127,10 +127,14 @@ class shark:
      CLIENT : @shell -client <ip> <port>
      Example: @shell -client 127.0.0.1 12345
      NOTRlE : Doesn't support telnet
+
+[15].To encrypt a text: @crypt -t 
+     Example: @crypt -t
+     Note   : Can only encrypt string format not(int, bytes)
      
 
 
-[13]. To exit program: @exit
+[16]. To exit program: @exit
 
 MORE Functions COMING...
 
@@ -706,6 +710,21 @@ MORE Functions COMING...
             else:
                 decode_data = sub.getoutput(data)
                 sock.send(f'|{decode_data}'.encode())
+
+
+
+    def crypt(self):
+        data = input(F.CYAN+"[*]Data: "+F.WHITE)
+        data1 = data.replace(" ", "~").encode()
+        cryp_hash = str(0000)
+        rep = len(data)-1//len(cryp_hash)+1
+        a4 = (cryp_hash*rep)[:len(data)].encode()
+        new_data = bytes([i1^i2 for (i1,i2) in zip(data1 , a4)])
+        dec_data = new_data.decode()
+        rep1 = dec_data.replace("~", " ")
+        print(F.CYAN+"[*]Data: "+F.BLUE+rep1)
+
+
         
 
 
@@ -757,10 +776,12 @@ if __name__ == '__main__':
                 shark.send_file()
             elif "@recv -file" in data: #16
                 shark.recv_file(data.split()[2], data.spliit()[3])
-            elif data == "@shell -host":
+            elif data == "@shell -host": #17
                 shark.shell_host()
-            elif "@shell -client" in data:
+            elif "@shell -client" in data: #18
                 shark.shell_client(data.split()[2], data.split()[3])
+            elif data == "@crypt -t": #19
+                shark.crypt()
             elif "@exit" in data: #00
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
@@ -775,4 +796,4 @@ if __name__ == '__main__':
                 print (F.WHITE+"")
                 sys(data)
         except:
-                print (F.RED+"[x] AN ERROR OCCURED")
+            print (F.RED+"[x]FUNCTION QUITED EXPECTEDLY OR UNEXPECTEDLY ! WHO KNOWS? :)")
