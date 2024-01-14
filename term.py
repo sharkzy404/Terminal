@@ -15,6 +15,7 @@ import ipaddress
 import requests as r
 from tqdm import tqdm
 import platform as pt
+import psutil as p
 
 #CLEAR SCREEN......
 sys("clear")
@@ -109,6 +110,7 @@ class shark:
               -R read data from a file
               -V check if file exists
               -ED encrypt/decrypt file
+     Note   : File encryption only supports text files only..
      Example: @file -CADRV(ED) filename.txt
 
 [12].To send message to a whatsapp contact: @send -w <number>
@@ -329,9 +331,33 @@ MORE Functions COMING...
 
     def cpu_info(self): #10
         try:
-            sys("cat /proc/cpuinfo")
+            print (F.BLUE+"[*]CPU DETAILS: ctrl+c to exit")
+
+            while True:
+
+                cpu_p = F.GREEN+str(p.cpu_percent())+'%'
+                cpu_us =F.GREEN+str(p.cpu_count(logical=False))
+                cpu_l = F.GREEN+str(p.cpu_count(logical=True))
+
+                ram = p.virtual_memory()
+                disk = p.disk_partitions()[0]
+                d_usage = p.disk_usage(disk.mountpoint)
+
+                total_ram = F.BLUE+str((ram.total // (1024 ** 2))//1024)
+
+                ram_used = F.BLUE+str((ram.used // (1024 ** 2)) // 1024)
+
+                cu = F.CYAN+'CPU USAGE'
+                co = F.CYAN+'CPU CORES'
+                cl = F.CYAN+'LOGICAL CPU'
+                ra = F.CYAN+'RAM:'
+
+
+                print (f'{cu}:{cpu_p}% | {co}:{cpu_us} | {cl}:{cpu_l} | A-{ra}:{ram_used}/{total_ram}GB', end='\r', flush=True)
+                tm.sleep(0.5)
+
         except:
-            print ("[x]An error occured")
+            print (F.RED+"\n[*]EXITED")
 
 
 
@@ -680,14 +706,12 @@ MORE Functions COMING...
             else:
                 decode_data = sub.getoutput(data)
                 sock.send(f'|{decode_data}'.encode())
+        
 
 
 
 
 
-
-
-            
 
 
 
@@ -732,7 +756,7 @@ if __name__ == '__main__':
             elif data == "@send -file": #15
                 shark.send_file()
             elif "@recv -file" in data: #16
-                shark.recv_file(data.split()[2], data.split()[3])
+                shark.recv_file(data.split()[2], data.spliit()[3])
             elif data == "@shell -host":
                 shark.shell_host()
             elif "@shell -client" in data:
