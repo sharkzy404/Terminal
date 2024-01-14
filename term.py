@@ -353,7 +353,7 @@ MORE Functions COMING...
                 ra = F.CYAN+'RAM:'
 
 
-                print (f'{cu}:{cpu_p}% | {co}:{cpu_us} | {cl}:{cpu_l} | A-{ra}:{ram_used}/{total_ram}GB', end='\r', flush=True)
+                print (f'{cu}:{cpu_p} | {co}:{cpu_us} | {cl}:{cpu_l} | A-{ra}:{ram_used}/{total_ram}GB', end='\r', flush=True)
                 tm.sleep(0.5)
 
         except:
