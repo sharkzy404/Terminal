@@ -8,6 +8,7 @@ try:
     sys("pip install uuid")
     sys("pip install ipaddress")
     sys("pip install requests")
+    sys("pip install psutil")
 except:
     print ("[*] An error occured")
 
