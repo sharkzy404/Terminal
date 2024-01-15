@@ -9,6 +9,7 @@ try:
     sys("pip install ipaddress")
     sys("pip install requests")
     sys("pip install psutil")
+    sys("pip install phonenumbers")
 except:
     print ("[*] An error occured")
 

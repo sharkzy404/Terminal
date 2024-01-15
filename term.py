@@ -16,6 +16,8 @@ import requests as r
 from tqdm import tqdm
 import platform as pt
 import psutil as p
+import phonenumbers as phone
+from phonenumbers import carrier, geocoder, timezone
 
 #CLEAR SCREEN......
 sys("clear")
@@ -131,6 +133,10 @@ class shark:
 [15].To encrypt a text: @crypt -t 
      Example: @crypt -t
      Note   : Can only encrypt string format not(int, bytes)
+
+[16].To check mobile number details: @check -no <country code> <number>
+     Example: @check -no +123123450000
+     Note   : Without country code: default is <+62>.
      
 
 
@@ -725,6 +731,60 @@ MORE Functions COMING...
         print(F.CYAN+"[*]Data: "+F.BLUE+rep1)
 
 
+
+
+    def check_phone(self, number):
+        user_phone = number
+        C = F.CYAN
+        B = F.BLUE
+
+        default_region = 'ID'
+
+        parsed_num = phone.parse(user_phone, default_region)
+        region_code = phone.region_code_for_number(parsed_num)
+        jenis_provider = carrier.name_for_number(parsed_num, "en")
+        location = geocoder.description_for_number(parsed_num, "id")
+        is_valid_number = phone.is_valid_number(parsed_num)
+        is_possible_number = phone.is_possible_number(parsed_num)
+        formatted_number = phone.format_number(parsed_num, phone.PhoneNumberFormat.INTERNATIONAL)
+
+        formated_num_mo = phone.format_number_for_mobile_dialing(parsed_num, default_region, with_formatting=True)
+
+        number_type = phone.number_type(parsed_num)
+        timezone1 = timezone.time_zones_for_number(parsed_num)
+        timezoneF = ', '.join(timezone1)
+        
+        num = 0
+        r = 0
+        for i in range(10):
+            num += 1
+            d = F.GREEN+'=≠'*num
+            r += 10
+            tm.sleep(0.3)
+            print(f'{B}[*]LOADING INFORMATION: {d} : {C}{str(r)}%', end='\r', flush=True)
+
+        print(f"\n\n{C}[*]Location             :{B}{location}")
+        print(f"{C}[*]Region Code          :{B}{region_code}")
+        print(f"{C}[*]Timezone             :{B}{timezoneF}")
+        print(f"{C}[*]Operator             :{B}{jenis_provider}")
+        print(f"{C}[*]Valid number         :{B}{is_valid_number}")
+        print(f"{C}[*]Possible number      :{B}{is_possible_number}")
+        print(f"{C}[*]International format :{B}{formatted_number}")
+        print(f"{C}[*]Mobile format        :{B}{formated_num_mo}")
+        print(f"{C}[*]Original number      :{B}{parsed_num.national_number}")
+        print(f"{C}[*]E.164 format         :{B}{phone.format_number(parsed_num, phone.PhoneNumberFormat.E164)}")
+        print(f"{C}[*]Country code         :{B}{parsed_num.country_code}")
+        print(f"{C}[*]Local number         :{B}{parsed_num.national_number}")
+        if number_type == phone.PhoneNumberType.MOBILE:
+            print(f"{C}[*]Type                 :{B}This is a mobile number")
+        elif number_type == phone.PhoneNumberType.FIXED_LINE:
+            print(f"{C}[*]Type                 :{B}This is a fixed-line number")
+        else:
+            print(f"{C}[*]Type                 :{B}This is another type of number")
+
+
+
+
         
 
 
@@ -744,7 +804,7 @@ if __name__ == '__main__':
         data = inpu()
         try:
             #data = inpu()
-            if data == "@help": #1
+            if "@help" in data: #1
                 shark.help()
             elif "@get -ip" in data: #2
                 shark.get_ip(data.split()[2])
@@ -760,11 +820,11 @@ if __name__ == '__main__':
                 shark.Num_Bina(data.split()[2], data.split()[3])
             elif "@bina -n" in data: #8
                 shark.Bina_Num(data.split()[2], data.split()[3])
-            elif data == "@ip -details": #9
+            elif "@ip -details" in data: #9
                 shark.get_device_ip()
-            elif data == "@cpu": #10
+            elif "@cpu" in data: #10
                 shark.cpu_info()
-            elif data == "@open -server": #11
+            elif "@open -server" in data: #11
                 shark.open_server()
             elif "@con -server" in data: #12
                 shark.connect_server(data.split()[2], data.split()[3])
@@ -772,7 +832,7 @@ if __name__ == '__main__':
                 shark.file_sys(data.split()[1], data.split()[2])
             elif "@send -w" in data: #14
                 shark.send_mess(data.split()[2])
-            elif data == "@send -file": #15
+            elif "@send -file" in data: #15
                 shark.send_file()
             elif "@recv -file" in data: #16
                 shark.recv_file(data.split()[2], data.spliit()[3])
@@ -780,8 +840,10 @@ if __name__ == '__main__':
                 shark.shell_host()
             elif "@shell -client" in data: #18
                 shark.shell_client(data.split()[2], data.split()[3])
-            elif data == "@crypt -t": #19
+            elif "@crypt -t" in data: #19
                 shark.crypt()
+            elif "@check -no" in data: #20
+                shark.check_phone(data.split()[2])
             elif "@exit" in data: #00
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
