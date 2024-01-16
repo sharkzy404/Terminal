@@ -848,12 +848,17 @@ if __name__ == '__main__':
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
                 break
-            elif data.startswith('cd '):
-                path = data[3:]
+            elif data.lstrip().startswith('cd') and "cd" != data.strip():
+                d_path = ' '.join(filter(None, data.split()))
+                path = d_path[3:]
                 try:
                     os.chdir(path)
                 except:
-                    print ("Dir not found")
+                    print (f"cd:{path}: No such file or directory")
+            elif data.strip() == 'cd':
+                
+                os.chdir(os.path.expanduser("~"))
+            
             else:
                 print (F.WHITE+"")
                 sys(data)
