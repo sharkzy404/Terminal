@@ -10,6 +10,7 @@ try:
     sys("pip install requests")
     sys("pip install psutil")
     sys("pip install phonenumbers")
+    sys("pip install pycryptodome")
 except:
     print ("[*] An error occured")
 
