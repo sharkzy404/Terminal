@@ -1,23 +1,30 @@
 #!/usr/bin/env python
-from os import system as sys
-import sys as sy
-from colorama import Fore as F
-import time as tm
-import socket
-import subprocess as sub
-import random as rd
+try:
+    from os import system as sys
+    import sys as sy
+    from colorama import Fore as F
+    import time as tm
+    import socket
+    import subprocess as sub
+    import random as rd
 #IMPORTING LIBRARIES......
-from os.path import exists
-import os
-import re
-import uuid
-import ipaddress
-import requests as r
-from tqdm import tqdm
-import platform as pt
-import psutil as p
-import phonenumbers as phone
-from phonenumbers import carrier, geocoder, timezone
+    from os.path import exists
+    import os
+    import re
+    import uuid
+    import ipaddress
+    import requests as r
+    from tqdm import tqdm
+    import platform as pt
+    import psutil as p
+    import phonenumbers as phone
+    from phonenumbers import carrier, geocoder, timezone
+    from Crypto.Cipher import AES
+    from Crypto.Random import get_random_bytes
+except ModuleNotFoundError as err:
+    print (f'shark: {err}')
+    quit(0)
+
 
 #CLEAR SCREEN......
 sys("clear")
@@ -47,7 +54,7 @@ def inpu():
         data =  input(F.YELLOW+f".———[{subt}@Shark]---[~/{new_path}]\n|\n°———{s} "+ F.GREEN)
         return data
     except:
-        print (F.RED+"!!!!!")
+        quit(0)
 
 
 
@@ -112,7 +119,6 @@ class shark:
               -R read data from a file
               -V check if file exists
               -ED encrypt/decrypt file
-     Note   : File encryption only supports text files only..
      Example: @file -CADRV(ED) filename.txt
 
 [12].To send message to a whatsapp contact: @send -w <number>
@@ -461,21 +467,21 @@ MORE Functions COMING...
                 data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
                 open_file = open(file, "w")
                 open_file.write(data)
-                print (F.BLUE+"[✓]File created successfully")
+                print (F.BLUE+"[✓]File created successfully".upper())
                 open_file.close()
             else:
-                print (F.RED+"[*]File already exists, wish to rewrite it")
+                print (F.RED+"[*]File already exists, wish to rewrite it".upper())
                 opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
                 if opt == "N":
-                    print (F.BLUE+"[✓]File was maintained")
+                    print (F.BLUE+"[✓]File was maintained".upper())
                 elif opt == "Y":
                     data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
                     open_file = open(file, "w")
                     open_file.write(data)
-                    print (F.BLUE+"[✓]File created successully")
+                    print (F.BLUE+"[✓]File created successully".upper())
                     open_file.close()
                 else:
-                    print (F.RED+"[x]Error, try inputing details")
+                    print (F.RED+"[x]Error, try inputing valid data".upper())
 
         elif option == "-A":
             try:
@@ -484,73 +490,126 @@ MORE Functions COMING...
                     open_file = open(file, "a")
                     open_file.write(data)
                     open_file.close()
-                    print (F.BLUE+"[✓]Done")
+                    print (F.BLUE+"[✓]Done".upper())
                 else:
-                    print (F.RED+"[x]File doesnt exists")
+                    print (F.RED+"[x]File doesnt exists".uppper())
             except:
                 print (F.RED+"[x]An error occured")
         elif option == "-D":
             if exists(file):
                 os.remove(file)
-                print (F.BLUE+"[✓]File deleted ")
+                print (F.BLUE+"[✓]File deleted ".upper())
             else:
-                print (F.RED+"[x]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists".upper())
         elif option == "-V":
             if exists(file):
-                print (F.BLUE+"[✓]File exists")
+                print (F.BLUE+"[✓]File exists".upper())
             else:
-                print (F.RED+"[x]File doesnt exists")
+                print (F.RED+"[x]File doesnt exists".upper())
         elif option == "-R":
             if exists(file):
-                open_file = open(file, "r")
-                print (F.BLUE+f"Data: {open_file.read()}")
+                try:
+                    open_file = open(file, "r")
+                    print (F.BLUE+f"Data: {open_file.read()}")
+                except:
+                    open_file = open(file, 'rb')
+                    print (F.BLUE+f"Data: {open_file.read()}")
             else:
                 print (F.RED+"[x]File doesnt exists")
         elif option == "-ED":
             if exists(file):
-                open_file = open(file, "r")
+                open_file = open(file, 'rb')
                 data = open_file.read()
                 open_file.close()
-                reg = re.search(r"enc=", data)
+
+                reg = re.search(r"enc=", str(data))
                 if reg != None:
-                    print (F.GREEN+"[*]File is in encrypted format\n[*]Wish to decrypt")
+                    print (F.GREEN+"[*]FILE IS IN ENCRYPTED FORMAT!!\n[*]WISH TO DECRYPT?")
                     opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
                     if opt == "Y":
-                        decryp_hash = str(0000)
-                        data1 = data.replace("enc=", "").encode()
-                        rep = len(data)-1//len(decryp_hash)+1
-                        a4 = (decryp_hash*rep)[:len(data)].encode()
-                        new_data = bytes([i1^i2 for (i1,i2) in zip(data1 , a4)])
-                        dec_data = new_data.decode()
-                        rep_data = dec_data.replace("~", " ")
-                        new_file = open(file, "w")
-                        new_file.write(rep_data)
-                        new_file.close()
-                        print (F.BLUE+"[*]Decrypting File.....")
-                        tm.sleep(1)
-                        print (F.BLUE+"[✓]File Decrypted succesfully")
+                        #decryption here
+                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ABOVE BYTES CHARACTER LONG")
+                        key = input(F.CYAN+"[*]KEY: "+F.WHITE)
+                        if len(key) == 16 or len(key) == 24 or len(key) == 32:
+                            key = key.encode()
+ 
+                            buffer_size = 65536
+                            open_file = open(file, "rb")
+                            iv = open_file.read(16)
+                            open_file.close()
+  
+                            cipher_encrypt = AES.new(key, AES.MODE_CFB, iv=iv)
+                            open_file = open(file, 'rb')
+                            buffer = open_file.read(buffer_size)
+                            output_file = open(file, "wb")
+
+                            while len(buffer) > 0:
+                                new = buffer.replace(b"enc=", b"")
+                                decrypted_bytes = cipher_encrypt.decrypt(new)
+                                new_data = decrypted_bytes
+                                output_file.write(new_data)
+                                buffer = open_file.read(buffer_size)
+
+                            open_file.close()
+                            output_file.close()
+
+                            print (F.BLUE+"[*]DECRYPTING FILE")
+                            tm.sleep(0.4)
+                            print (F.BLUE+"[✓]FILE DECRYPTED SUCCESSFULLY")
+
+                        else:
+                            print (F.RED+"[x]INVALID KEY BYTE")
+
                     elif opt == "N":
-                        print (F.BLUE+"[✓]Ok")
+                        print (F.BLUE+"[✓]OK")
+
                     else:
                         print (F.RED+"[x]Error, invalid input")
 
                 elif reg == None:
-                    print (F.GREEN+"[*]File is in decrypted Format\n[*]Wish to encrypt")
+                    print (F.GREEN+"[*]FILE IS IN DECRYPTED FORMAT!!\n[*]WISH TO ENCRYPT?")
                     opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
                     if opt == "Y":
-                        decryp_hash = str(0000)
-                        data1 = data.replace(" ", "~").encode()
-                        rep = len(data)-1//len(decryp_hash)+1
-                        a4 = (decryp_hash*rep)[:len(data)].encode()
-                        new_data =b"enc=" + bytes([i1^i2 for (i1,i2) in zip(data1, a4)])
-                        new_file = open(file, "w")
-                        new_file.write(new_data.decode())
-                        new_file.close()
-                        print (F.BLUE+"[*]Encrpyting file.....")
-                        tm.sleep(2)
-                        print (F.BLUE+"[✓]File Encrypted successfully")
+                        #encryption here
+                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ABOVE BYTES CHARACTER LONG")
+                        key = input(F.CYAN+"[*]KEY: "+F.WHITE)
+                        if len(key) == 16 or len(key) == 24 or len(key) == 32:
+                            key = key.encode()
+
+                            buffer_size = 65536 
+                            
+                            cipher_encrypt = AES.new(key, AES.MODE_CFB)
+                            open_file = open(file, 'rb')
+                            buffer = open_file.read(buffer_size)
+                            output_file = open(file, "wb")
+                            output_file.write(cipher_encrypt.iv)
+
+                            while len(buffer) > 0:
+                                ciphered_bytes = cipher_encrypt.encrypt(buffer)
+                                new_data = b'enc='+ciphered_bytes
+                                output_file.write(new_data)
+                                buffer = open_file.read(buffer_size)
+                            open_file.close()
+                            output_file.close()
+
+
+                            print (F.BLUE+"[*]ENCRYPTING FILE")
+                            tm.sleep(0.4)
+                            print (F.BLUE+"[✓]FILE ENCRYPTED SUCCESSFULLY")
+                            tm.sleep(0.6)
+                            key_file = open("key.txt", "a")
+                            cur_dir = os.getcwd()
+                            key1 = str(key).replace("b", "")
+                            key2 = key1.replace("'", "")
+                            data = "•••[filnename= "+file+"|i| key= "+key2+"]"
+                            key_file.write(data)
+                            print(f"{F.CYAN}[*]KEY SAVED ON {cur_dir}/key.txt")
+                        else:
+                            print(F.RED+"[*]INVALID KEY BYTE")
+
                     elif opt == "N":
                         print (F.BLUE+"[✓]Ok")
+
                     else:
                         print (F.RED+"[x]Error, invalid input")
             else:
@@ -572,7 +631,7 @@ MORE Functions COMING...
 
     def send_file(self): #15
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,5))
         port = a3+a2+a1+a2+a3
         sock.bind(('0.0.0.0', int(port)))
         print (F.BLUE+"[✓]SERVER STARTED")
@@ -591,14 +650,16 @@ MORE Functions COMING...
         sock.listen(5)
 
         file_path = input(F.YELLOW+"[%]/path/to/file: "+F.WHITE)
-        print (F.BLUE+"[*]WAITING FOR USER TO RECIEVE")
         size = open(file_path, 'rb')
         size = len(size.read())
+        print (F.BLUE+"[*]WAITING FOR USER TO RECIEVE")
+        
 
         num = 0
         while True:
             try:
                 num += 1
+                file = file_path
                 split1 = file_path.split("/")
                 file = split1[num]
 
@@ -756,11 +817,11 @@ MORE Functions COMING...
         
         num = 0
         r = 0
-        for i in range(10):
-            num += 1
-            d = F.GREEN+'=≠'*num
-            r += 10
-            tm.sleep(0.3)
+        for i in range(100):
+            num += 0.2
+            d = F.GREEN+'█'*int(num)
+            r += 1
+            tm.sleep(0.01)
             print(f'{B}[*]LOADING INFORMATION: {d} : {C}{str(r)}%', end='\r', flush=True)
 
         print(f"\n\n{C}[*]Location             :{B}{location}")
@@ -835,7 +896,7 @@ if __name__ == '__main__':
             elif "@send -file" in data: #15
                 shark.send_file()
             elif "@recv -file" in data: #16
-                shark.recv_file(data.split()[2], data.spliit()[3])
+                shark.recv_file(data.split()[2], data.split()[3])
             elif data == "@shell -host": #17
                 shark.shell_host()
             elif "@shell -client" in data: #18
@@ -862,5 +923,15 @@ if __name__ == '__main__':
             else:
                 print (F.WHITE+"")
                 sys(data)
+        except FileNotFoundError as er:
+            print(F.RED+"[x]", er)
+        except IsADirectoryError as er:
+            print(F.RED+"[x]", er)
+        except ValueError as er:
+            print(F.RED+"[x]", er)
+        except TypeError as er:
+            print(F.RED+"[x]", er)
+        except ValueError as er:
+            print(F.RED+"[x]", er)
         except:
             print (F.RED+"[x]FUNCTION QUITED EXPECTEDLY OR UNEXPECTEDLY ! WHO KNOWS? :)")
