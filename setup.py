@@ -11,6 +11,8 @@ try:
     sys("pip install psutil")
     sys("pip install phonenumbers")
     sys("pip install pycryptodome")
+    sys("pip install tenable-io")
+    sys("pip install scapy")
 except:
     print ("[*] An error occured")
 
@@ -20,7 +22,7 @@ path_to_bin = input("[*]::'/path/to/bin': ")
 try:
     sys(f"chmod +x {path_to_pro}")
     sys(f"ln -s {path_to_pro} {path_to_bin}/term")
-    print ("[*] Done: Start Terminal By Inputting : 'term'")
+    print ("[*] IF NOT ERROR: Start Terminal By executing: 'term'")
 except:
     print ("[*] An Error Occured")
 

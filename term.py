@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 try:
-    from os import system as sys
     import sys as sy
     from colorama import Fore as F
     import time as tm
@@ -14,6 +13,7 @@ try:
     import uuid
     import ipaddress
     import requests as r
+    import json
     from tqdm import tqdm
     import platform as pt
     import psutil as p
@@ -21,11 +21,17 @@ try:
     from phonenumbers import carrier, geocoder, timezone
     from Crypto.Cipher import AES
     from Crypto.Random import get_random_bytes
+    import logging
+    logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+    from scapy.all import *
+    from tenable.io import TenableIO
+
 except ModuleNotFoundError as err:
     print (f'shark: {err}')
     quit(0)
 
 
+from os import system as sys
 #CLEAR SCREEN......
 sys("clear")
 pt = pt.system()
@@ -51,7 +57,7 @@ def inpu():
                 break
         
         s = F.BLUE+"$"
-        data =  input(F.YELLOW+f".———[{subt}@Shark]---[~/{new_path}]\n|\n°———{s} "+ F.GREEN)
+        data =  input(F.YELLOW+f"{F.BLUE}.{F.YELLOW}━━[{F.BLUE}{subt}{F.GREEN}@{F.CYAN}Shark{F.YELLOW}]━━[~/{new_path}]\n|\n{F.BLUE}°{F.YELLOW}━━{s} "+ F.GREEN)
         return data
     except:
         quit(0)
@@ -66,93 +72,92 @@ class shark:
         self.soc = socket
 
     def main(self):
-        data = """
-                   Welcome To Mr.Shark Terminal"
-                   For help and functions: @help
-                    ctrl+c to close if stuck  """
-        print (F.GREEN+data)
+        num = 0
+        for i in range(300):
+            num += 0.2
+            d = F.YELLOW+'━'*int(num)
+            print(f'{d}', end="\r", flush=True)
+            tm.sleep(0.001)
+        print(" "*60)
+        data = f"""
+                {F.CYAN}♣WELCOME·TO·MR·SHARK·TERMINAL♠
+                {F.GREEN} For help and functions: {F.CYAN}@help
+                    {F.BLUE}Ctrl+c to close if stuck 
+                    """
+        print (data)
     
 
 
 
     #HELP LIST FUNCTION.......
     def help(self): #1
-        tools = """
-[1]. Getting Ip address: @get -ip [target]
-     Example: @get -ip google.com
-
-[2]. Port scanning multiple: @port -scan [target]
-     Example: @port -scan 127.0.0.1
-
-[3]. Port scanning single: @port -scan -s [target] [port]
-     Example: @port--s -scan 127.0.0.1 80
-
-[4]. Convert Number to Binary: @num -b [number] [base]
-     Example: @num -b 2000 2
-
-[5]. Convert Binary to Number: @bina -n [binary] [base]
-     Example: @bina -n 1011101010 2
-
-[6]. Convert Alphabet to Binary: @alpha -b
-     Example: @alpha -b 
-
-[7]. Convert Binary to Alphabet: @bina -a 
-     Example: @bina -a 
-
-[8]. To get device NETWORKS INFO: @ip -details
-     Example: @ip -details
-
-[9]. To get cpu info: @cpu
-     Example: @cpu
-
+        tools = f'''
+[1]. Getting Ip address: {F.CYAN}@get -ip [target]{F.GREEN}
+     Example: {F.BLUE}@get -ip google.com{F.GREEN}
+[2]. Port scanning multiple: {F.CYAN}@port -scan [target]{F.GREEN}
+     Example: {F.BLUE}@port -scan 127.0.0.1{F.GREEN}
+[3]. Port scanning single: {F.CYAN}@port -scan -s [target] [port]{F.GREEN}
+     Example: {F.BLUE}@port--s -scan 127.0.0.1 80{F.GREEN}
+[4]. Convert Number to Binary: {F.CYAN}@num -b [number] [base]{F.GREEN}
+     Example: {F.BLUE}@num -b 2000 2{F.GREEN}
+[5]. Convert Binary to Number: {F.CYAN}@bina -n [binary] [base]{F.GREEN}
+     Example: {F.BLUE}@bina -n 1011101010 2{F.GREEN}
+[6]. Convert Alphabet to Binary: {F.CYAN}@alpha -b{F.GREEN}
+     Example: {F.BLUE}@alpha -b{F.GREEN} 
+[7]. Convert Binary to Alphabet: {F.CYAN}@bina -a{F.GREEN}
+     Example: {F.BLUE}@bina -a{F.GREEN} 
+[8]. To get device NETWORKS INFO: {F.CYAN}@ip -details{F.GREEN}
+     Example: {F.BLUE}@ip -details{F.GREEN}
+[9]. To get cpu info: {F.CYAN}@cpu{F.GREEN}
+     Example: {F.BLUE}@cpu{F.GREEN}
 [10].To start wifi chat room: 
-      HOST   : @open -server
-      CLIENT : @con -server <ip> <port>
-      Example: @con -server 127.0.0.1 12345 
-      Note   : To exit chat any user can input "@bye"..
-             : Doesn't support telnet 
-
-[11].To create file: @file <option> <file_name>
-     Options: -C create file
-              -A append data to existsing file
-              -D delete file
-              -R read data from a file
-              -V check if file exists
-              -ED encrypt/decrypt file
-     Example: @file -CADRV(ED) filename.txt
-
-[12].To send message to a whatsapp contact: @send -w <number>
-    Example: @send -w +1234567890
-
-[13].To send file via wifi: @send -file
-     To recieve file       : @recv -file <host> <port>
-     Example: @recv @file 127.0.0.1 12345
-     NOTE   : Program cant send File with Permission..
-            : Doesn't suppport telnet
-
+      HOST   : {F.CYAN}@open -server{F.GREEN}
+      CLIENT : {F.CYAN}@con -server <ip> <port>{F.GREEN}
+      Example: {F.CYAN}@con -server 127.0.0.1 12345{F.GREEN} 
+      Note   : {F.BLUE}To exit chat any user can input "@bye"..{F.GREEN}
+             : {F.BLUE}Doesn't support telnet{F.GREEN}
+[11].To create file: {F.CYAN}@file <option> <file_name>{F.GREEN}
+     Options: {F.BLUE}-C create file{F.GREEN}
+              {F.BLUE}-A append data to existsing file{F.GREEN}
+              {F.BLUE}-D delete file{F.GREEN}
+              {F.BLUE}-R read data from a file{F.GREEN}
+              {F.BLUE}-V check if file exists{F.GREEN}
+              {F.BLUE}-ED encrypt/decrypt file{F.GREEN}
+     Example: {F.BLUE}@file -CADRV(ED) filename.txt{F.GREEN}
+[12].To send message to a whatsapp contact: {F.CYAN}@send -w <number>{F.GREEN}
+    Example: {F.BLUE}@send -w +1234567890{F.GREEN}
+[13].To send file via wifi: {F.CYAN}@send -file{F.GREEN}
+     To recieve file       : {F.CYAN}@recv -file <host> <port>{F.GREEN}
+     Example: {F.BLUE}@recv @file 127.0.0.1 12345{F.GREEN}
+     NOTE   : {F.BLUE}Program cant send File with Permission..{F.GREEN}
+            : {F.BLUE}Doesn't suppport telnet{F.GREEN}
 [14].To start remote shell via wifi::
-     HOST   : @shell -host
-     CLIENT : @shell -client <ip> <port>
-     Example: @shell -client 127.0.0.1 12345
-     NOTRlE : Doesn't support telnet
+     HOST   : {F.CYAN}@shell -host{F.GREEN}
+     CLIENT : {F.CYAN}@shell -client <ip> <port>{F.GREEN}
+     Example: {F.BLUE}@shell -client 127.0.0.1 12345{F.GREEN}
+     NOTE   : {F.BLUE}Doesn't support telnet{F.GREEN}
+[15].To encrypt a text: {F.CYAN}@crypt -t{F.GREEN} 
+     Example: {F.BLUE}@crypt -t{F.GREEN}
+     Note   : {F.BLUE}Can only encrypt string format not(int, bytes){F.GREEN}
+[16].To check mobile number details: {F.CYAN}@check -no <country code> <number>{F.GREEN}
+     Example: {F.BLUE}@check -no +123123450000{F.GREEN}
+     NOTE   : {F.BLUE}Without country code: default is <+62>{F.GREEN}
+[17].To scan vulnerability: {F.CYAN}@scan -v <target>{F.GREEN}
+     Example: {F.BLUE}@scan -v 192.168.00.00{F.GREEN}
+     NOTE   : {F.BLUE}GET YOUR CREDENTIAL (ACCESS , SECRET & API K              EY) FROM tenable.io website{F.GREEN}
+[18].To analyse connected network: {F.CYAN}@net -a <target>{F.GREEN}
+     Example: {F.BLUE}@net -a 192.168.00.00/00{F.GREEN}
+     NOTE   : {F.BLUE}Prgram requires root priviledge{F.GREEN}
+[19].To sniff packet: {F.CYAN}@sniff -p <interface>{F.GREEN}
+     Example: {F.BLUE}@sniff -p [eth0/wlan0]{F.GREEN}
+     NOTE   : {F.BLUE}Program requires root priviledge{F.GREEN}
+[20].To check weather: {F.CYAN}@check -w <city>{F.GREEN}
+     Example: {F.BLUE}@check -w London{F.GREEN}
+     NOTE   : {F.BLUE}Get your api key from api.openweathermap.org{F.GREEN} 
+[00]. To exit program: {F.CYAN}@exit{F.GREEN}
 
-[15].To encrypt a text: @crypt -t 
-     Example: @crypt -t
-     Note   : Can only encrypt string format not(int, bytes)
-
-[16].To check mobile number details: @check -no <country code> <number>
-     Example: @check -no +123123450000
-     Note   : Without country code: default is <+62>.
-     
-
-
-[16]. To exit program: @exit
-
-MORE Functions COMING...
-
-        """
-        print (F.BLUE+tools)
-
+MORE Functions COMING... '''
+        print (F.GREEN+tools)
 
 
 
@@ -163,7 +168,6 @@ MORE Functions COMING...
             print (F.BLUE+f"[✓]{host}: {data}")
         except:
             print (F.RED+"[x]Error, maybe invalid host or no network connection [*]")
-
 
 
 
@@ -199,7 +203,6 @@ MORE Functions COMING...
         except:
             print(F.RED+"[OPP's]SERVER NOT RECHEABLE :'( ")
 
-
     
 
 
@@ -222,15 +225,12 @@ MORE Functions COMING...
 
 
 
-
-
     def Bina_Num(self, binary, base): #5
         try:
-            print (F.GREEN+"[*]OUTPUT"+F.BLUE)
+            print (F.GREEN+"[%]OUTPUT"+F.BLUE)
             print (F.BLUE+str(int(binary, int(base))))
         except:
             print (F.RED+"[x]An error occured")
-
 
 
 
@@ -239,7 +239,7 @@ MORE Functions COMING...
         try:
             num = int(num)
             base = int(base)
-            print (F.GREEN+"[*]OUTPUT"+F.BLUE)
+            print (F.GREEN+"[%]OUTPUT"+F.BLUE)
             print (F.BLUE+bin(num) [base: ])
         except:
             print (F.RED+"[x]An error occured")
@@ -248,7 +248,7 @@ MORE Functions COMING...
 
 
     def Alpha_Bina(self): #7
-        alph = input(F.YELLOW+"[*]Enter Text: "+F.WHITE)
+        alph = input(F.YELLOW+"[%]Enter Text: "+F.WHITE)
         alph = alph.split(" ")
         num = -1
         try:
@@ -263,8 +263,6 @@ MORE Functions COMING...
                     break
         except:
             print (F.RED+"[x]An error occured")
-
-
 
 
 
@@ -343,8 +341,6 @@ MORE Functions COMING...
 
 
 
-
-
     def cpu_info(self): #10
         try:
             print (F.BLUE+"[*]CPU DETAILS: ctrl+c to exit")
@@ -408,7 +404,7 @@ MORE Functions COMING...
         c, addr = sock.accept()
 
         while True:
-            sen = input(F.CYAN+"[*]SEND-MESSAGE: "+F.WHITE)
+            sen = input(F.CYAN+"[%]SEND-MESSAGE: "+F.WHITE)
             c.send(sen.encode())
             print (F.BLUE+"[✓]MESSAGE SENT")
             print (F.GREEN+"[*]WAITING FOR INCOMING MESSAGE")
@@ -424,8 +420,6 @@ MORE Functions COMING...
                 print (F.RED+"[*]USER CLOSED CHAT")
                 c.close()
                 break
-            
-
 
 
 
@@ -445,7 +439,7 @@ MORE Functions COMING...
                  print(F.RED+"[*]USER CLOSED CHAT")
                  sock.close()
                  break
-             sen = input(F.CYAN+"SEND-MESSAGE: "+F.WHITE)
+             sen = input(F.CYAN+"[%]SEND-MESSAGE: "+F.WHITE)
              sock.send(sen.encode())
              print (F.BLUE+"[✓]MESSAGE SENT")
              if sen == "@bye":
@@ -457,14 +451,10 @@ MORE Functions COMING...
 
 
 
-
-
-
-
     def file_sys(self, option, file): #13
         if option == "-C":
             if exists(file) == False:
-                data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
+                data = input(F.YELLOW+"[%]Enter Data: "+F.WHITE)
                 open_file = open(file, "w")
                 open_file.write(data)
                 print (F.BLUE+"[✓]File created successfully".upper())
@@ -475,7 +465,7 @@ MORE Functions COMING...
                 if opt == "N":
                     print (F.BLUE+"[✓]File was maintained".upper())
                 elif opt == "Y":
-                    data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
+                    data = input(F.YELLOW+"[%]Enter Data: "+F.WHITE)
                     open_file = open(file, "w")
                     open_file.write(data)
                     print (F.BLUE+"[✓]File created successully".upper())
@@ -486,7 +476,7 @@ MORE Functions COMING...
         elif option == "-A":
             try:
                 if exists(file):
-                    data = input(F.YELLOW+"[*]Enter Data: "+F.WHITE)
+                    data = input(F.YELLOW+"[%]Enter Data: "+F.WHITE)
                     open_file = open(file, "a")
                     open_file.write(data)
                     open_file.close()
@@ -528,8 +518,8 @@ MORE Functions COMING...
                     opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
                     if opt == "Y":
                         #decryption here
-                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ABOVE BYTES CHARACTER LONG")
-                        key = input(F.CYAN+"[*]KEY: "+F.WHITE)
+                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ↑ABOVE↑ BYTES CHARACTER LONG")
+                        key = input(F.CYAN+"[%]KEY: "+F.WHITE)
                         if len(key) == 16 or len(key) == 24 or len(key) == 32:
                             key = key.encode()
  
@@ -553,12 +543,17 @@ MORE Functions COMING...
                             open_file.close()
                             output_file.close()
 
-                            print (F.BLUE+"[*]DECRYPTING FILE")
-                            tm.sleep(0.4)
-                            print (F.BLUE+"[✓]FILE DECRYPTED SUCCESSFULLY")
+                            num = 0
+                            for i in range(200):
+                                num += 0.2
+                                d = F.GREEN+"━"*int(num)
+                                tm.sleep(0.01)
+                                print(f'{F.BLUE}DECRYPTING FILE: {d}', end="\r", flush=True)
+                            tm.sleep(0.2)
+                            print (F.BLUE+"[✓]FILE DECRYPTED SUCCESSFULLY                                ")
 
                         else:
-                            print (F.RED+"[x]INVALID KEY BYTE")
+                            print (F.RED+"[x]INVALID KEY BYTE SIZE")
 
                     elif opt == "N":
                         print (F.BLUE+"[✓]OK")
@@ -568,11 +563,11 @@ MORE Functions COMING...
 
                 elif reg == None:
                     print (F.GREEN+"[*]FILE IS IN DECRYPTED FORMAT!!\n[*]WISH TO ENCRYPT?")
-                    opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
+                    opt = input(F.YELLOW+"[%]Y/N: "+F.WHITE).upper()
                     if opt == "Y":
                         #encryption here
-                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ABOVE BYTES CHARACTER LONG")
-                        key = input(F.CYAN+"[*]KEY: "+F.WHITE)
+                        print(F.BLUE+"[*]NOTE: KEY MUST BE EITHER 16, 24 OR 32 BYTES CHARACTER\n[*]MEANING YOUR KEY SHOULD BE ↑ABOVE↑ BYTES CHARACTER LONG")
+                        key = input(F.CYAN+"[%]KEY: "+F.WHITE)
                         if len(key) == 16 or len(key) == 24 or len(key) == 32:
                             key = key.encode()
 
@@ -592,23 +587,27 @@ MORE Functions COMING...
                             open_file.close()
                             output_file.close()
 
-
-                            print (F.BLUE+"[*]ENCRYPTING FILE")
-                            tm.sleep(0.4)
-                            print (F.BLUE+"[✓]FILE ENCRYPTED SUCCESSFULLY")
+                            num = 0
+                            for i in range(200):
+                                num += 0.2
+                                d = F.GREEN+"━"*int(num)
+                                tm.sleep(0.01)
+                                print(f'{F.BLUE}ENCRYPTING FILE:{d}', end="\r", flush=True)
+                            tm.sleep(0.2)
+                            print (F.BLUE+"[✓]FILE ENCRYPTED SUCCESSFULLY                                    ")
                             tm.sleep(0.6)
                             key_file = open("key.txt", "a")
                             cur_dir = os.getcwd()
                             key1 = str(key).replace("b", "")
                             key2 = key1.replace("'", "")
-                            data = "•••[filnename= "+file+"|i| key= "+key2+"]"
+                            data = "∞[filnename= "+file+"|:|key= "+key2+" ]∞"
                             key_file.write(data)
                             print(f"{F.CYAN}[*]KEY SAVED ON {cur_dir}/key.txt")
                         else:
-                            print(F.RED+"[*]INVALID KEY BYTE")
+                            print(F.RED+"[x]INVALID KEY BYTE SIZE")
 
                     elif opt == "N":
-                        print (F.BLUE+"[✓]Ok")
+                        print (F.BLUE+"[✓]OK")
 
                     else:
                         print (F.RED+"[x]Error, invalid input")
@@ -618,14 +617,14 @@ MORE Functions COMING...
 
 
 
-
     def send_mess(self, number): #14
         try:
-            message = input(F.YELLOW+"Message: "+F.WHITE).replace(" ", "%20")
+            message = input(F.YELLOW+"[%]Message: "+F.WHITE).replace(" ", "%20")
             sys(f'xdg-open https://wa.me/{number}?text={message}')
             print (F.BLUE+"[*]OPENING WHATSAPP....")
         except:
             print ("[x]An Error occured")
+
 
 
 
@@ -683,6 +682,8 @@ MORE Functions COMING...
             c.close()
 
 
+
+
     def recv_file(self, ip, port): #16
         c_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         c_socket.connect((ip, int(port)))
@@ -693,7 +694,7 @@ MORE Functions COMING...
 
         file = input(F.YELLOW+"[%]/save/to/path/to/file: "+F.WHITE)
 
-        choice = input(F.YELLOW+"[*]WISH TO ACCEPT: Y/N: "+F.WHITE).upper()
+        choice = input(F.YELLOW+"[%]WISH TO ACCEPT: Y/N: "+F.WHITE).upper()
         if choice == "Y":
             c_socket.send("YES".encode())
             size = c_socket.recv(1024).decode()
@@ -710,6 +711,8 @@ MORE Functions COMING...
                         progress_bar.update(len(rec))
             c_socket.close()
             print (F.BLUE+"[✓]FILE DOWNLOADED")
+
+
 
 
     def shell_host(self): #17
@@ -752,6 +755,8 @@ MORE Functions COMING...
             print(F.WHITE+rec)
 
 
+
+
     def shell_client(self, ip, port): #18
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((ip, int(port)))
@@ -780,8 +785,9 @@ MORE Functions COMING...
 
 
 
-    def crypt(self):
-        data = input(F.CYAN+"[*]Data: "+F.WHITE)
+
+    def crypt(self): #19
+        data = input(F.CYAN+"[%]Data: "+F.WHITE)
         data1 = data.replace(" ", "~").encode()
         cryp_hash = str(0000)
         rep = len(data)-1//len(cryp_hash)+1
@@ -794,7 +800,7 @@ MORE Functions COMING...
 
 
 
-    def check_phone(self, number):
+    def check_phone(self, number): #20
         user_phone = number
         C = F.CYAN
         B = F.BLUE
@@ -846,9 +852,90 @@ MORE Functions COMING...
 
 
 
+    def scan_vul(self, target): #21
+        api_key = input(F.YELLOW+"[*]API-KEY : "+F.WHITE)
+        secret_key = input(F.YELLOW+"[%]SECRET-KEY: "+F.WHITE)
+        access_key = input(F.YELLOW+"[%]ACESS-KEY: "+F.WHITE)
+
+        api_url = 'https://cloud.tenable.com/api/v2/policies'
+        headers = {
+                'Content-Type': 'application/json',
+                'X-ApiKeys': f'accessKey={access_key};secretKey={secret_key}'
+                }
+
+        try:
+            response = r.get(api_url, headers)
+            if response.status_code == 200:
+                policies = response.json()
+
+                for policy in policies['policies']:
+                    policy_id = policy['policy_id']
+
+                load = TenableIO(api_key=api_key, secret_key=secret_key)
+                scan = load.scans.create("My scan", targets=[target], policy_id=policy_id)
+                scan.launch()
+
+                while scan.status() != 'completed':
+                    pass
+
+                results = scan.results()
+                for vul in results['vulnerabilities']:
+                    print(f"{F.BLUE}[*]Vulnerabilty: {F.GREEN}{vul['plugin_name']}\t{F.BLUE}[*]Severity: {F.GREEN}{vul['severity']}")
+            
+            else:
+                print(f"{F.RED}[x]ERROR: {F.BLUE}{response.status_code}-{F.GREEN}{response.text}")
+        except requests.exceptions.RequestException as e:
+            print(F.RE+"[x]Error connecting to host")
+
+
+
+
+    def net_scan(self, target): #22
         
+        arp_request = ARP(pdst=target)
+
+        ether = Ether(dst='ff:ff:ff:ff:ff:ff')
+        packet = ether/arp_request
+
+        result = srp(packet, timeout=3, verbose=0)[0]
+        devices_list = []
+
+        for sent, received in result:
+                devices_list.append({'ip': received.psrc, 'mac': received.hwsrc})
+        return device_list
+
+            
+        data = device_list
+        for device in data:
+                print(f"{F.BLUE}IP: {F.GREEN}{device['ip']} || {F.BLUE}MAC: {F.GREEN}{device['mac']}")
 
 
+
+
+    def packet_sniffer(self, interface): #23
+        packets = sniff(prn=lambda x: x.summary(), filter="tcp", iface=interface, store=0, count=10)
+        for packet in packets:
+            print(F.BLUE+packet.summary())
+
+
+
+
+    def weather(self, city): #24
+        try:
+            api_key = input(F.YELLOW+"[%]API-KEY: "+F.WHITE)
+            base_url = "http://api.openweathermap.org/data/2.5/weather"
+            params = {"q": city, "appid": api_key, "units": "metric"}
+            response = r.get(base_url, params=params)
+            data = response.json()
+            if response.status_code == 200:
+                main_weather = data["weather"][0]["description"]
+                temperature = data["main"]["temp"]
+                print(f"{F.BLUE}WEATHER: {F.GREEN}{main_weather} \t {F.BLUE}TEMPERATURE: {F.GREEN}{temperature}Â°C")
+            else:
+                print(F.RED+"[x]Error loading credentials")
+        except requests.exceptions.RequestException as e:
+            print(F.RED+"[x]Error connecting to host")
+            
 
 
 
@@ -901,10 +988,18 @@ if __name__ == '__main__':
                 shark.shell_host()
             elif "@shell -client" in data: #18
                 shark.shell_client(data.split()[2], data.split()[3])
-            elif "@crypt -t" in data: #19
+            elif "@crypt" in data: #19
                 shark.crypt()
             elif "@check -no" in data: #20
                 shark.check_phone(data.split()[2])
+            elif "@scan -v" in data: #21
+                shark.scan_vul(data.split()[2])
+            elif "@net -a" in data: #22
+                shark.net_scan(data.split()[2])
+            elif "@sniff -p" in data: #23
+                shark.packet_sniffer(data.split()[2])
+            elif "@check -w" in data: #24
+                shark.weather(data.split()[2])
             elif "@exit" in data: #00
                 print (F.RED+"[✓]EXITING PROGRAM...")
                 tm.sleep(1)
@@ -933,5 +1028,7 @@ if __name__ == '__main__':
             print(F.RED+"[x]", er)
         except ValueError as er:
             print(F.RED+"[x]", er)
+        except PermissionError as er:
+            print(F.RED+"[x]", er,": needs administrator priviledge")
         except:
             print (F.RED+"[x]FUNCTION QUITED EXPECTEDLY OR UNEXPECTEDLY ! WHO KNOWS? :)")
