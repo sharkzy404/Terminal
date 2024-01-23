@@ -930,10 +930,10 @@ MORE Functions COMING... '''
             if response.status_code == 200:
                 main_weather = data["weather"][0]["description"]
                 temperature = data["main"]["temp"]
-                print(f"{F.BLUE}WEATHER: {F.GREEN}{main_weather} \t {F.BLUE}TEMPERATURE: {F.GREEN}{temperature}Â°C")
+                print(f"{F.BLUE}WEATHER: {F.GREEN}{main_weather} \t {F.BLUE}TEMPERATURE: {F.GREEN}{temperature}°C")
             else:
                 print(F.RED+"[x]Error loading credentials")
-        except requests.exceptions.RequestException as e:
+        except r.exceptions.RequestException as e:
             print(F.RED+"[x]Error connecting to host")
             
 
