@@ -57,7 +57,7 @@ def inpu():
                 break
         
         s = F.BLUE+"$"
-        data =  input(F.YELLOW+f"{F.BLUE}.{F.YELLOW}━━[{F.BLUE}{subt}{F.GREEN}@{F.CYAN}Shark{F.YELLOW}]━━[~/{new_path}]\n|\n{F.BLUE}°{F.YELLOW}━━{s} "+ F.GREEN)
+        data =  input(F.YELLOW+f"{F.BLUE}.{F.YELLOW}——[{F.BLUE}{subt}{F.GREEN}@{F.CYAN}Shark{F.YELLOW}]——[~/{new_path}]\n|\n{F.BLUE}°{F.YELLOW}——{s} "+ F.GREEN)
         return data
     except:
         quit(0)
@@ -818,7 +818,7 @@ MORE Functions COMING... '''
         formated_num_mo = phone.format_number_for_mobile_dialing(parsed_num, default_region, with_formatting=True)
 
         number_type = phone.number_type(parsed_num)
-        timezone1 = timezone.time_zones_for_number(parsed_num)
+        timezone1 = phone.timezone.time_zones_for_number(parsed_num)
         timezoneF = ', '.join(timezone1)
         
         num = 0
