@@ -34,6 +34,8 @@ except ModuleNotFoundError as err:
 from os import system as sys
 #CLEAR SCREEN......
 sys("clear")
+
+#check for supported operating system
 pt = pt.system()
 if pt != "Linux":
     print(F.RED+"[*]OPERARING SYSTEM NOT SUPPORTED")
@@ -41,7 +43,7 @@ if pt != "Linux":
 else:
     pass
 
-
+#input function
 def inpu():
     try:
         print ("\n")
@@ -64,13 +66,13 @@ def inpu():
 
 
 
-#DECLARING CLASS......
+#DECLARING CLASS for the whole function
 class shark:
     def __init__(self):
         #Run OOP's
         self.runner = "Runner"
         self.soc = socket
-
+    #load the terminal on start
     def main(self):
         num = 0
         for i in range(300):
@@ -124,6 +126,7 @@ class shark:
               {F.BLUE}-V check if file exists{F.GREEN}
               {F.BLUE}-ED encrypt/decrypt file{F.GREEN}
      Example: {F.BLUE}@file -CADRV(ED) filename.txt{F.GREEN}
+     NOTE   : {F.BLUE}Can only encrypt and decrypt text contained file{F.GREEN}
 [12].To send message to a whatsapp contact: {F.CYAN}@send -w <number>{F.GREEN}
     Example: {F.BLUE}@send -w +1234567890{F.GREEN}
 [13].To send file via wifi: {F.CYAN}@send -file{F.GREEN}
@@ -147,7 +150,7 @@ class shark:
      NOTE   : {F.BLUE}GET YOUR CREDENTIAL (ACCESS , SECRET & API K              EY) FROM tenable.io website{F.GREEN}
 [18].To analyse connected network: {F.CYAN}@net -a <target>{F.GREEN}
      Example: {F.BLUE}@net -a 192.168.00.00/00{F.GREEN}
-     NOTE   : {F.BLUE}Prgram requires root priviledge{F.GREEN}
+     NOTE   : {F.BLUE}Program requires root priviledge{F.GREEN}
 [19].To sniff packet: {F.CYAN}@sniff -p <interface>{F.GREEN}
      Example: {F.BLUE}@sniff -p [eth0/wlan0]{F.GREEN}
      NOTE   : {F.BLUE}Program requires root priviledge{F.GREEN}
@@ -162,16 +165,18 @@ MORE Functions COMING... '''
 
 
 
+    #getting dns details of web host
     def get_ip(self, host): #2
         try:
             data = self.soc.gethostbyname(host)
-            print (F.BLUE+f"[✓]{host}: {data}")
+            print (F.CYAN+f"[✓]{host}: {F.BLUE}{data}")
         except:
             print (F.RED+"[x]Error, maybe invalid host or no network connection [*]")
 
 
 
 
+    #multiple port scanning using ping results as timeout
     def port_scan(self, ip): #3
         data = sub.getoutput(f'ping -w 1 {ip} ')
 
@@ -206,6 +211,7 @@ MORE Functions COMING... '''
     
 
 
+   #single port scan
     def port_scan_sin(self, ip, port): #4
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -225,6 +231,7 @@ MORE Functions COMING... '''
 
 
 
+   #converting binary to interger
     def Bina_Num(self, binary, base): #5
         try:
             print (F.GREEN+"[%]OUTPUT"+F.BLUE)
@@ -235,6 +242,7 @@ MORE Functions COMING... '''
 
 
 
+    #converting number to binary
     def Num_Bina(self, num, base): #6
         try:
             num = int(num)
@@ -246,7 +254,8 @@ MORE Functions COMING... '''
 
 
 
-
+ 
+    #convertinh alphabet to binary
     def Alpha_Bina(self): #7
         alph = input(F.YELLOW+"[%]Enter Text: "+F.WHITE)
         alph = alph.split(" ")
@@ -267,6 +276,7 @@ MORE Functions COMING... '''
 
 
 
+     # converting binary to alphabet
     def Bina_Alpha(self): #8
         try:
             splita = input(F.YELLOW+"[*]Enter Binary: "+F.WHITE)
@@ -283,6 +293,7 @@ MORE Functions COMING... '''
 
 
 
+   # getting device network details
     def get_device_ip(self): #9
         #sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #sock.settimeout(2)
@@ -340,7 +351,8 @@ MORE Functions COMING... '''
 
 
 
-
+   
+    #getting device cpu information
     def cpu_info(self): #10
         try:
             print (F.BLUE+"[*]CPU DETAILS: ctrl+c to exit")
@@ -374,6 +386,8 @@ MORE Functions COMING... '''
 
 
 
+
+   #open server for wifi chat
     def open_server(self): #11
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #sock = socket.socket()
@@ -424,6 +438,7 @@ MORE Functions COMING... '''
 
 
 
+    #connect to wifi chat server
     def connect_server(self, ip, port): #12
          sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
          sock.connect((ip, int(port)))
@@ -451,6 +466,7 @@ MORE Functions COMING... '''
 
 
 
+   # file systems 
     def file_sys(self, option, file): #13
         if option == "-C":
             if exists(file) == False:
@@ -617,6 +633,7 @@ MORE Functions COMING... '''
 
 
 
+    # send message to a whatsapp contact
     def send_mess(self, number): #14
         try:
             message = input(F.YELLOW+"[%]Message: "+F.WHITE).replace(" ", "%20")
@@ -628,6 +645,7 @@ MORE Functions COMING... '''
 
 
 
+   #send file via wifi or localhost
     def send_file(self): #15
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,5))
@@ -684,6 +702,7 @@ MORE Functions COMING... '''
 
 
 
+   #recieve file via wifi or localhost
     def recv_file(self, ip, port): #16
         c_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         c_socket.connect((ip, int(port)))
@@ -715,6 +734,7 @@ MORE Functions COMING... '''
 
 
 
+    # connect to shell client
     def shell_host(self): #17
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tm.sleep(1)
@@ -757,6 +777,7 @@ MORE Functions COMING... '''
 
 
 
+   # open shell connection
     def shell_client(self, ip, port): #18
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((ip, int(port)))
@@ -786,6 +807,7 @@ MORE Functions COMING... '''
 
 
 
+    # encrypt string 
     def crypt(self): #19
         data = input(F.CYAN+"[%]Data: "+F.WHITE)
         data1 = data.replace(" ", "~").encode()
@@ -800,6 +822,7 @@ MORE Functions COMING... '''
 
 
 
+   # phone number osint
     def check_phone(self, number): #20
         user_phone = number
         C = F.CYAN
@@ -852,6 +875,7 @@ MORE Functions COMING... '''
 
 
 
+   # vulnerability scanner
     def scan_vul(self, target): #21
         api_key = input(F.YELLOW+"[*]API-KEY : "+F.WHITE)
         secret_key = input(F.YELLOW+"[%]SECRET-KEY: "+F.WHITE)
@@ -890,6 +914,7 @@ MORE Functions COMING... '''
 
 
 
+    #scan a network
     def net_scan(self, target): #22
         
         arp_request = ARP(pdst=target)
@@ -912,6 +937,7 @@ MORE Functions COMING... '''
 
 
 
+    #scan a packet
     def packet_sniffer(self, interface): #23
         packets = sniff(prn=lambda x: x.summary(), filter="tcp", iface=interface, store=0, count=10)
         for packet in packets:
@@ -920,6 +946,7 @@ MORE Functions COMING... '''
 
 
 
+   # check weather
     def weather(self, city): #24
         try:
             api_key = input(F.YELLOW+"[%]API-KEY: "+F.WHITE)
