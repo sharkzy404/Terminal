@@ -139,7 +139,8 @@ class shark:
      CLIENT : {F.CYAN}@shell -client <ip> <port>{F.GREEN}
      Example: {F.BLUE}@shell -client 127.0.0.1 12345{F.GREEN}
      NOTE   : {F.BLUE}Doesn't support telnet{F.GREEN}
-[15].To encrypt a text: {F.CYAN}@crypt -t{F.GREEN} 
+            : {F.BLUE}To exit session input <exit>{F.GREEN}
+[15].To encrypt a text: {F.CYAN}@crypt -t{F.GREEN}
      Example: {F.BLUE}@crypt -t{F.GREEN}
      Note   : {F.BLUE}Can only encrypt string format not(int, bytes){F.GREEN}
 [16].To check mobile number details: {F.CYAN}@check -no <country code> <number>{F.GREEN}
@@ -391,10 +392,11 @@ MORE Functions COMING... '''
     def open_server(self): #11
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         #sock = socket.socket()
-        print (F.CYAN+"[NOTE]: ONLY SUPPORT WLAN")      
+        print (F.CYAN+"[NOTE]: ONLY SUPPORT WLAN")
+        print(F.CYAN+"......: @bye to close chat")
 
         tm.sleep(1)
-        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,5))
         try:
             ip_wl = sub.getoutput('ifconfig | grep inet').split(" ")[51]
         except:
@@ -738,7 +740,7 @@ MORE Functions COMING... '''
     def shell_host(self): #17
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         tm.sleep(1)
-        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,6))
+        a1, a2, a3 = str(rd.randint(1,6)), str(rd.randint(1,6)), str(rd.randint(1,5))
         try:
             ip_wl = sub.getoutput('ifconfig | grep inet').split(" ")[51]
         except:
@@ -753,6 +755,7 @@ MORE Functions COMING... '''
         except:
             ip = ip_in
         port = a3+a2+a1+a2+a3
+        print(F.CYAN+"[*]NOTE: input <exit> to close session")
         print (F.BLUE+"[✓]SHELL HOST STARTED")
         tm.sleep(1)
         print (F.GREEN+f"[*]IP: {ip}: [*]PORT: {port}")
@@ -1057,5 +1060,7 @@ if __name__ == '__main__':
             print(F.RED+"[x]", er)
         except PermissionError as er:
             print(F.RED+"[x]", er,": needs administrator priviledge")
+        except KeyboardInterrupt:
+            print(F.CYAN+"[✓] Closed")
         except:
-            print (F.RED+"[x]FUNCTION QUITED EXPECTEDLY OR UNEXPECTEDLY ! WHO KNOWS? :)")
+            print (F.RED+"[x]An Error occured")
