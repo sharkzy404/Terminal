@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 try:
     import sys as sy
     from colorama import Fore as F
@@ -24,11 +24,12 @@ try:
     import logging
     logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
     from scapy.all import *
-    from tenable.io import TenableIO
+    #from tenable.io import TenableIO
 
-except ModuleNotFoundError as err:
-    print (f'shark: {err}')
-    quit(0)
+#except ModuleNotFoundError as err:
+except:
+    print (f'shar: ')
+    #quit(0)
 
 
 from os import system as sys
@@ -529,8 +530,8 @@ MORE Functions COMING... '''
                 open_file = open(file, 'rb')
                 data = open_file.read()
                 open_file.close()
-
-                reg = re.search(r"enc=", str(data))
+                
+                reg = re.search(r'enc'+'=', str(data))
                 if reg != None:
                     print (F.GREEN+"[*]FILE IS IN ENCRYPTED FORMAT!!\n[*]WISH TO DECRYPT?")
                     opt = input(F.YELLOW+"[*]Y/N: "+F.WHITE).upper()
@@ -552,7 +553,8 @@ MORE Functions COMING... '''
                             output_file = open(file, "wb")
 
                             while len(buffer) > 0:
-                                new = buffer.replace(b"enc=", b"")
+                                enc = 'enc'+'='
+                                new = buffer.replace(bytes(enc, 'UTF-8'), b"")
                                 decrypted_bytes = cipher_encrypt.decrypt(new)
                                 new_data = decrypted_bytes
                                 output_file.write(new_data)
@@ -599,7 +601,8 @@ MORE Functions COMING... '''
 
                             while len(buffer) > 0:
                                 ciphered_bytes = cipher_encrypt.encrypt(buffer)
-                                new_data = b'enc='+ciphered_bytes
+                                enc = 'enc'+'='
+                                new_data = bytes(enc, 'UTF-8')+ciphered_bytes
                                 output_file.write(new_data)
                                 buffer = open_file.read(buffer_size)
                             open_file.close()
@@ -913,7 +916,6 @@ MORE Functions COMING... '''
                 print(f"{F.RED}[x]ERROR: {F.BLUE}{response.status_code}-{F.GREEN}{response.text}")
         except requests.exceptions.RequestException as e:
             print(F.RE+"[x]Error connecting to host")
-
 
 
 
