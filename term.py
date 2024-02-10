@@ -26,10 +26,9 @@ try:
     from scapy.all import *
     from tenable.io import TenableIO
 
-#except ModuleNotFoundError as err:
-except:
+except ModuleNotFoundError as err:
     print (f'shar: ')
-    #quit(0)
+    quit(0)
 
 
 from os import system as sys
