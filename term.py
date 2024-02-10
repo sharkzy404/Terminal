@@ -24,7 +24,7 @@ try:
     import logging
     logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
     from scapy.all import *
-    #from tenable.io import TenableIO
+    from tenable.io import TenableIO
 
 #except ModuleNotFoundError as err:
 except:
