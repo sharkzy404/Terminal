@@ -29,6 +29,8 @@ try:
 except ModuleNotFoundError as err:
     print (f'shar: ')
     quit(0)
+except KeyboardInterrupt:
+    quit(0)
 
 
 from os import system as sys
