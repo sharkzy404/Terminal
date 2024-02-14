@@ -29,8 +29,6 @@ try:
 except ModuleNotFoundError as err:
     print (f'shar: ')
     quit(0)
-except KeyboardInterrupt:
-    quit(0)
 
 
 from os import system as sys
@@ -100,7 +98,7 @@ class shark:
      Example: {F.BLUE}@get -ip google.com{F.GREEN}
 [2]. Port scanning multiple: {F.CYAN}@port -scan [target]{F.GREEN}
      Example: {F.BLUE}@port -scan 127.0.0.1{F.GREEN}
-[3]. Port scanning single: {F.CYAN}@port -scan -s [target] [port]{F.GREEN}
+[3]. Port scanning single: {F.CYAN}@port--s -scan [target] [port]{F.GREEN}
      Example: {F.BLUE}@port--s -scan 127.0.0.1 80{F.GREEN}
 [4]. Convert Number to Binary: {F.CYAN}@num -b [number] [base]{F.GREEN}
      Example: {F.BLUE}@num -b 2000 2{F.GREEN}
