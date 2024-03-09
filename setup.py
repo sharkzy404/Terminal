@@ -12,6 +12,7 @@ try:
     sys("pip install phonenumbers")
     sys("pip install pycryptodome")
     sys("pip install tenable-io")
+    sys("pip install pytenable")
     sys("pip install scapy")
 except:
     print ("[*] An error occured")

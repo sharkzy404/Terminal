@@ -7,8 +7,8 @@ Note:
 1. due to different structure of ifconfig on Linux distros...
 2. network info might not be accurate...
 3. configure it according to your ifconfig structure..
-4. Tested under Android Operating System....
-5. Some tools requires superuser privileg (on feature 8, 9)...
+4. Tested under Android (7) Operating System....
+5. Some tools requires superuser privileg (on feature 8, 9, 12)...
 
 Features:
 1. Binary Tools
@@ -22,7 +22,7 @@ Features:
 9. Packet Sniffer
 10. Vulnerabilty Scanner
 11. Network Information
-12. Cpu Information
+12. Cpu Information (might work without root access on earlier Android versions)
 13. Mobile Number Osint
 14. Grab Website IP
 

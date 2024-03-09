@@ -27,7 +27,7 @@ try:
     from tenable.io import TenableIO
 
 except ModuleNotFoundError as err:
-    print (f'shar: {err}')
+    print (f'shark: {err}')
     quit(0)
 
 
