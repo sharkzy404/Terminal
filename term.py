@@ -274,13 +274,13 @@ MORE Functions COMING... '''
                 except:
                     break
         except:
-            print (F.RED+"[x]An error occured")'''
+            print (F.RED+"[x]An error occured")
 
 
 
 
      # converting binary to alphabet
-     '''def Bina_Alpha(self): #8
+     def Bina_Alpha(self): #8
         try:
             splita = input(F.YELLOW+"[*]Enter Binary: "+F.WHITE)
             splita = splita.split(" ")
