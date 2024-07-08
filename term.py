@@ -72,6 +72,8 @@ class shark:
         #Run OOP's
         self.runner = "Runner"
         self.soc = socket
+        self.file = inpu().split()[2]
+        self.err = 'an error occured'
     #load the terminal on start
     def main(self):
         num = 0
@@ -257,7 +259,7 @@ MORE Functions COMING... '''
 
  
     #convertinh alphabet to binary
-    def Alpha_Bina(self): #7
+    '''def Alpha_Bina(self): #7
         alph = input(F.YELLOW+"[%]Enter Text: "+F.WHITE)
         alph = alph.split(" ")
         num = -1
@@ -272,13 +274,13 @@ MORE Functions COMING... '''
                 except:
                     break
         except:
-            print (F.RED+"[x]An error occured")
+            print (F.RED+"[x]An error occured")'''
 
 
 
 
      # converting binary to alphabet
-    def Bina_Alpha(self): #8
+     '''def Bina_Alpha(self): #8
         try:
             splita = input(F.YELLOW+"[*]Enter Binary: "+F.WHITE)
             splita = splita.split(" ")
@@ -289,7 +291,110 @@ MORE Functions COMING... '''
                 print (charac, end = "")
             print ("\n")
         except:
-            print (F.RED+"[x]An error occured")
+            print (F.RED+"[x]An error occured")'''
+
+    def repair(self, file):
+        if True:
+            open_file = open(file, 'r')
+            read_file = open_file.read()
+            open_file.close()
+            data = read_file
+
+            for i in read_file:
+                if i != '1' and i != '0' and i != ' ':
+                    new = data.replace(i, '')
+                    data =  new
+            new_file = open(file, 'w')
+            new_file.write(data)
+            new_file.close()
+            print('file repaired')
+        else:
+            pass
+
+    def Alpha_Bina(self, file):
+        
+         file = open(self.File, 'r')
+         read_file = file.read()
+         file.close()
+
+         data = read_file
+         split_data = data
+         print(data)
+         num = -1
+         print(' ')
+         print(self.ok)
+         save_to = self.file.replace('.txt', '')
+         new_file = open(f'{save_to}.bin', 'w')
+         write_data = ''
+         while True:
+             num += 1
+             try:
+                 for data in bytearray(split_data[num], 'utf-8'):
+                     new = format(data, 'b')
+                     print(new)
+                     write_data = write_data + new + ' '
+                     new_data = write_data
+             except:
+                 new_file.write(new_data)
+                 save_to = self.file.replace('.txt', '')
+                 print(f'Data saved to {save_to}.bin\n')
+                 new_file.close()
+                 break
+
+
+    def Bina_Alpha(self, file):
+        try:
+            file = open(self.file, 'r')
+            read_file = file.read()
+            num = 0
+            for i in reaf_file:
+                if i != '1' and i != '0' and i != ' ':
+                    num = 0
+                    for j in read_file:
+                        num += 1
+                        if read_file[num] == i:
+                            error_loc = num
+                            error_data = i
+                            file.close()
+            file.close()
+            data =  read_file
+            split_data = data.split(' ')
+            print(' ')
+            print(self.ok)
+            new_file = open(F'{self.file}.txt', 'w')
+            num = -1
+            for data in split_data:
+                try:
+                    num += 1
+                    int_data = int(data, 2)
+                    charac = chr(int_data)
+                    write_data = write_data + charac
+                    new_data = write_data
+                except:
+                    break
+            new_file.write(new_data)
+            print(f'Data saved to {self.file}.txt')
+            new_file.close()
+        except FileNotFoundError as err:
+            print(err)
+        except:
+            print(self.err)
+            try:
+                print(f'First Invalid data detected is: {error_data} in string location: {error_loc} \n')
+                opt = input('commence file repair now [y/n]: ').upper()
+                if opt == 'Y':
+                    shark.repair(self.file)
+                elif opt == 'N':
+                    print('ok')
+                else:
+                    print('invalid input')
+            except:
+                print('invalid bianry file format')
+                    
+            
+                        
+            
+            
 
 
 
@@ -992,9 +1097,9 @@ if __name__ == '__main__':
             elif "@port--s -scan" in data: #4
                 shark.port_scan_sin(data.split()[2], data.split()[3])
             elif "@bina -a" in data: #5
-                shark.Bina_Alpha()
+                shark.Bina_Alpha(data.split()[2])
             elif "alpha -b" in data: #6
-                shark.Alpha_Bina()
+                shark.Alpha_Bina(data.split()[2])
             elif "@num -b" in data: #7
                 shark.Num_Bina(data.split()[2], data.split()[3])
             elif "@bina -n" in data: #8
