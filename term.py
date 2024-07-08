@@ -308,7 +308,7 @@ MORE Functions COMING... '''
             new_file = open(file, 'w')
             new_file.write(data)
             new_file.close()
-            print('File repaired')
+            print(F.CYAN+'[✓]File repaired')
         else:
             pass
 
@@ -335,7 +335,7 @@ MORE Functions COMING... '''
              except:
                  new_file.write(new_data)
                  save_to = file.replace('.txt', '')
-                 print(f'Data saved to {save_to}.bin\n')
+                 print(f'{F.CYAN+"[✓]Data saved to"} {save_to}.bin\n')
                  new_file.close()
                  break
 
@@ -373,23 +373,23 @@ MORE Functions COMING... '''
                 except:
                     pass   
             new_file.write(new_data)
-            print(f'Data saved to {file}.txt')
+            print(f'{F.CYAN+"[✓]Data saved to"} {file}.txt')
             new_file.close()
         except FileNotFoundError as err:
             print(err)
         except:
-            print('An error occured')
+            print(F.RED+'[x]An error occured')
             try:
-                print(f'First Invalid data detected is: {error_data} in string location: {error_loc} \n')
-                opt = input('commence file repair now [y/n]: ').upper()
+                print(f'{F.GREEN+"[*]First Invalid data detected is: {error_data} in string location:"} {error_loc} \n')
+                opt = input(F.WHITE+'[*]commence file repair now [y/n]: ').upper()
                 if opt == 'Y':
                     shark.repair(file)
                 elif opt == 'N':
                     print('ok')
                 else:
-                    print('Invalid input')
+                    print(F.RED+'[x]Invalid input')
             except:
-                print('Invalid bianry file format')
+                print(F.RED+'[x]Invalid bianry file format')
                     
             
                         
