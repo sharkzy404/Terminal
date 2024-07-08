@@ -308,7 +308,7 @@ MORE Functions COMING... '''
             new_file = open(file, 'w')
             new_file.write(data)
             new_file.close()
-            print(F.CYAN+'[✓]File repaired')
+            print(F.CYAN+'[✓]File Repaired')
         else:
             pass
 
@@ -321,7 +321,6 @@ MORE Functions COMING... '''
          data = read_file
          split_data = data
          num = -1
-         print(" ")
          save_to = file.replace('.txt', '')
          new_file = open(f'{save_to}.bin', 'w')
          write_data = ''
@@ -335,7 +334,7 @@ MORE Functions COMING... '''
              except:
                  new_file.write(new_data)
                  save_to = file.replace('.txt', '')
-                 print(f'{F.CYAN+"[✓]Data saved to"} {save_to}.bin\n')
+                 print(f'{F.CYAN+"[✓]DATA SAVED TO"} {save_to}.bin')
                  new_file.close()
                  break
 
@@ -358,7 +357,6 @@ MORE Functions COMING... '''
             open_file.close()
             data =  read_file
             split_data = data.split(' ')
-            print(' ')
             new_file = open(F'{file}.txt', 'w')
             write_data = ''
             num = -1
@@ -373,23 +371,23 @@ MORE Functions COMING... '''
                 except:
                     pass   
             new_file.write(new_data)
-            print(f'{F.CYAN+"[✓]Data saved to"} {file}.txt')
+            print(f'{F.CYAN+"[✓]DATA SAVED TO"} {file}.txt')
             new_file.close()
         except FileNotFoundError as err:
             print(err)
         except:
-            print(F.RED+'[x]An error occured')
+            print(F.RED+'[x]AN ERROR OCCURED')
             try:
-                print(f'{F.GREEN+"[*]First Invalid data detected is: {error_data} in string location:"} {error_loc} \n')
-                opt = input(F.WHITE+'[*]commence file repair now [y/n]: ').upper()
+                print(f'{F.GREEN+"[*]First Invalid Data Detected is:"} {error_data} In String Location: {error_loc}')
+                opt = input(F.WHITE+'[*]Commence File Repair Now [Y/N]?: ').upper()
                 if opt == 'Y':
                     shark.repair(file)
                 elif opt == 'N':
                     print('ok')
                 else:
-                    print(F.RED+'[x]Invalid input')
+                    print(F.RED+'[x]Invalid Input')
             except:
-                print(F.RED+'[x]Invalid bianry file format')
+                print(F.RED+'[x]Invalid Binary File Format')
                     
             
                         
