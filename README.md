@@ -1,4 +1,5 @@
-**Shark Terminal**
+**Shark Terminal** 
+
 Terminal like emulator with user daily activites....
 Run Setup for libary installations and binary setup...
 Program only for Linux OS & Android..
