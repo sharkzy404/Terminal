@@ -2,7 +2,9 @@
 
 Terminal like emulator with user daily activites....
 Run Setup for libary installations and binary setup...
-Program only for Linux OS & Android..
+Program only for Linux OS & Android0
+Run:
+$ ./setup.sh .. to build and configure tools
 
 **Note:**
 1. due to different structure of ifconfig on Linux distros...
